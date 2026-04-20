@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPI Generator - After Sales Golden English Bekasi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #F4E4BC;
+            --gold-dark: #A68B28;
+            --gold-glow: rgba(212, 175, 55, 0.3);
+            --black-primary: #0D0D0D;
+            --black-light: #1A1A1A;
+            --black-card: #141414;
+            --gray-dark: #2D2D2D;
+            --gray-medium: #4A4A4A;
+            --gray-light: #8A8A8A;
+            --white: #FFFFFF;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #F44336;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--black-primary);
+            color: var(--white);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--black-light) 0%, var(--black-primary) 100%);
+            border-bottom: 2px solid var(--gold-primary);
+            padding: 25px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .brand-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--black-primary);
+        }
+        .brand-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold-primary);
+        }
+        .brand-text p {
+            font-size: 11px;
+            color: var(--gray-light);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .team-badge {
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            color: var(--black-primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .period-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .period-selector label {
+            font-size: 12px;
+            color: var(--gray-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .period-selector select,
+        .period-selector input {
+            background: var(--black-card);
+            border: 1px solid var(--gray-dark);
+            color: var(--white);
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .period-selector select:focus,
+        .period-selector input:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+        }
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 40px;
+        }
+        /* Section Title */
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: var(--gold-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--gold-primary) 0%, transparent 100%);
+        }
+        /* Target Section */
+        .targets-section {
+            background: var(--black-card);
+            border: 1px solid var(--gray-dark);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        .targets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+        .target-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .target-item label {
+            font-size: 10px;
+            color: var(--gray-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .target-item input {
+            background: var(--black-light);
+            border: 1px solid var(--gray-dark);
+            color: var(--gold-light);
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .target-item input:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+        }
+        .target-item input[readonly] {
+            background: var(--gray-dark);
+            cursor: not-allowed;
+            color: var(--gray-light);
+        }
+        .target-item .bobot-badge {
+            font-size: 9px;
+            color: var(--gold-primary);
+            font-weight: 600;
+        }
+        /* Employee Cards */
+        .employees-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .employee-card {
+            background: var(--black-card);
+            border: 1px solid var(--gray-dark);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .card-header {
+            background: linear-gradient(135deg, var(--black-light) 0%, var(--gray-dark) 100%);
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--gray-dark);
+        }
+        .employee-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .employee-avatar {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--black-primary);
+        }
+        .employee-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--white);
+        }
+        .employee-role {
+            font-size: 10px;
+            color: var(--gray-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .score-badge {
+            background: var(--black-primary);
+            border: 2px solid var(--gold-primary);
+            border-radius: 10px;
+            padding: 8px 16px;
+            text-align: center;
+        }
+        .score-badge .score-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold-primary);
+        }
+        .score-badge .score-label {
+            font-size: 9px;
+            color: var(--gray-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .metric-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .metric-item.full-width {
+            grid-column: 1 / -1;
+        }
+        .metric-label {
+            font-size: 9px;
+            color: var(--gray-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .metric-label .bobot {
+            background: var(--gold-dark);
+            color: var(--black-primary);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 8px;
+            font-weight: 700;
+        }
+        .metric-label .data-tag {
+            background: var(--gray-dark);
+            color: var(--gray-light);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 8px;
+            font-weight: 600;
+        }
+        .metric-input {
+            background: var(--black-light);
+            border: 1px solid var(--gray-dark);
+            color: var(--white);
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            width: 100%;
+        }
+        .metric-input:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+        }
+        .metric-input[readonly] {
+            background: var(--gray-dark);
+            color: var(--gold-light);
+            cursor: not-allowed;
+        }
+        .metric-input::placeholder {
+            color: var(--gray-medium);
+            font-size: 11px;
+        }
+        /* Category Divider */
+        .category-divider {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 8px 0 4px 0;
+            font-size: 10px;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+        .category-divider::before,
+        .category-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--gray-dark);
+        }
+        /* Feedback Section */
+        .feedback-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--gray-dark);
+        }
+        .feedback-label {
+            font-size: 10px;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .feedback-textarea {
+            background: var(--black-light);
+            border: 1px solid var(--gray-dark);
+            color: var(--white);
+            padding: 12px;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            width: 100%;
+            min-height: 70px;
+            resize: vertical;
+        }
+        .feedback-textarea:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+        }
+        /* Card Footer */
+        .card-footer {
+            padding: 12px 20px;
+            background: var(--black-light);
+            border-top: 1px solid var(--gray-dark);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .btn-preview-individual {
+            background: transparent;
+            color: var(--gold-primary);
+            border: 1px solid var(--gold-primary);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+        .btn-preview-individual:hover {
+            background: var(--gold-primary);
+            color: var(--black-primary);
+        }
+        .btn-download-individual {
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            color: var(--black-primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-download-individual:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px var(--gold-glow);
+        }
+        /* ==================== */
+        /* PDF PREVIEW SECTION */
+        /* ==================== */
+        .preview-section {
+            margin-bottom: 30px;
+        }
+        .preview-container {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        /* PDF Content - This is what gets exported */
+        .pdf-content {
+            background: var(--black-primary);
+            padding: 25px;
+            width: 100%;
+            color: var(--white);
+            max-height: 70vh; /* Batasi tinggi untuk preview agar tidak overflow */
+            overflow: visible; /* Biarkan konten terlihat penuh */
+        }
+        .pdf-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--gold-primary);
+            margin-bottom: 25px;
+        }
+        .pdf-brand h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: var(--gold-primary);
+            margin: 0;
+        }
+        .pdf-brand p {
+            font-size: 12px;
+            color: var(--gray-light);
+            margin: 4px 0 0 0;
+        }
+        .pdf-period {
+            text-align: right;
+        }
+        .pdf-period .period {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: var(--white);
+        }
+        .pdf-period .year {
+            font-size: 13px;
+            color: var(--gray-light);
+        }
+        /* Stats Grid */
+        .pdf-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .pdf-stat-card {
+            background: linear-gradient(135deg, var(--black-light) 0%, var(--gray-dark) 100%);
+            border: 1px solid var(--gray-dark);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        .pdf-stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--gold-primary);
+        }
+        .pdf-stat-label {
+            font-size: 10px;
+            color: var(--gray-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+        /* Chart */
+        .pdf-chart-container {
+            background: var(--black-light);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .pdf-chart-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            color: var(--gold-primary);
+            margin-bottom: 15px;
+        }
+        /* Ranking Table */
+        .pdf-ranking-section {
+            margin-bottom: 25px;
+        }
+        .pdf-ranking-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            color: var(--gold-primary);
+            margin-bottom: 15px;
+        }
+        .pdf-ranking-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .pdf-ranking-table th {
+            background: var(--black-light);
+            color: var(--gold-primary);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 2px solid var(--gold-primary);
+        }
+        .pdf-ranking-table td {
+            padding: 14px 15px;
+            border-bottom: 1px solid var(--gray-dark);
+            font-size: 13px;
+        }
+        .rank-badge {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+        }
+        .rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: var(--black-primary); }
+        .rank-2 { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); color: var(--black-primary); }
+        .rank-3 { background: linear-gradient(135deg, #CD7F32, #8B4513); color: var(--white); }
+        .rank-other { background: var(--gray-dark); color: var(--gray-light); }
+        .grade-badge {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .grade-a { background: rgba(76, 175, 80, 0.2); color: #4CAF50; border: 1px solid #4CAF50; }
+        .grade-b { background: rgba(33, 150, 243, 0.2); color: #2196F3; border: 1px solid #2196F3; }
+        .grade-c { background: rgba(255, 152, 0, 0.2); color: #FF9800; border: 1px solid #FF9800; }
+        .grade-d { background: rgba(244, 67, 54, 0.2); color: #F44336; border: 1px solid #F44336; }
+        /* Insight */
+        .pdf-insight-section {
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            border-radius: 10px;
+            padding: 20px;
+            color: var(--black-primary);
+        }
+        .pdf-insight-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .pdf-insight-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--black-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .pdf-insight-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .pdf-insight-author {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+        .pdf-insight-content {
+            font-size: 13px;
+            line-height: 1.7;
+        }
+        /* Actions */
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid var(--gray-dark);
+        }
+        .btn {
+            padding: 14px 30px;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            color: var(--black-primary);
+            border: none;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--gold-glow);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: var(--gold-primary);
+            border: 2px solid var(--gold-primary);
+        }
+        .btn-secondary:hover {
+            background: var(--gold-primary);
+            color: var(--black-primary);
+        }
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 25px;
+            border-top: 1px solid var(--gray-dark);
+            margin-top: 40px;
+        }
+        .footer p {
+            font-size: 11px;
+            color: var(--gray-light);
+        }
+        .footer .brand-name {
+            color: var(--gold-primary);
+            font-weight: 600;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .employees-grid { grid-template-columns: 1fr; }
+            .metrics-grid { grid-template-columns: 1fr; }
+            .pdf-stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .main-content { padding: 20px; }
+        }
+        /* Hidden for PDF export */
+        .no-print { }
+       
+        @media print {
+            .no-print { display: none !important; }
+        }
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--black-card);
+            border: 1px solid var(--gold-primary);
+            border-radius: 12px;
+            max-width: 750px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--gray-dark);
+        }
+        .modal-header h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold-primary);
+            font-size: 18px;
+            margin: 0;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--gray-light);
+            font-size: 28px;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .modal-close:hover {
+            color: var(--gold-primary);
+        }
+        .modal-body {
+            padding: 25px;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 20px 25px;
+            border-top: 1px solid var(--gray-dark);
+        }
+        /* Individual Preview Card inside Modal */
+        .individual-preview {
+            background: var(--black-primary);
+            border-radius: 10px;
+            padding: 25px;
+        }
+        .individual-preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--gold-primary);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .individual-preview-employee {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--black-light);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .individual-preview-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--black-primary);
+        }
+        .individual-preview-score {
+            margin-left: auto;
+            text-align: center;
+            background: var(--black-primary);
+            border: 2px solid var(--gold-primary);
+            border-radius: 10px;
+            padding: 10px 20px;
+        }
+        .individual-preview-score .value {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--gold-primary);
+            font-weight: bold;
+        }
+        .individual-preview-score .label {
+            font-size: 9px;
+            color: var(--gray-light);
+            text-transform: uppercase;
+        }
+        .individual-preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+        .individual-preview-table th {
+            background: var(--black-light);
+            color: var(--gold-primary);
+            padding: 12px;
+            text-align: left;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--gold-primary);
+        }
+        .individual-preview-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--gray-dark);
+        }
+        .individual-preview-feedback {
+            background: var(--black-light);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid var(--gold-primary);
+            margin-bottom: 20px;
+        }
+        .individual-preview-feedback h4 {
+            font-size: 10px;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            margin: 0 0 10px 0;
+        }
+        .individual-preview-feedback p {
+            font-size: 12px;
+            color: var(--gray-light);
+            margin: 0;
+            line-height: 1.6;
+        }
+        .individual-preview-grade {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .individual-preview-grade .grade-display {
+            background: var(--black-light);
+            padding: 15px 25px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .individual-preview-grade .grade-display .label {
+            font-size: 10px;
+            color: var(--gray-light);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .individual-preview-grade .grade-display .value {
+            font-size: 32px;
+            font-weight: bold;
+        }
+        .individual-preview-insight {
+            flex: 1;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            padding: 15px;
+            border-radius: 8px;
+            color: var(--black-primary);
+        }
+        .individual-preview-insight h4 {
+            font-size: 10px;
+            text-transform: uppercase;
+            margin: 0 0 5px 0;
+        }
+        .individual-preview-insight .author {
+            font-size: 9px;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+        .individual-preview-insight p {
+            font-size: 12px;
+            line-height: 1.6;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header no-print">
+        <div class="header-content">
+            <div class="brand">
+                <div class="brand-icon">GE</div>
+                <div class="brand-text">
+                    <h1>Golden English Bekasi</h1>
+                    <p>KPI Generator System</p>
+                </div>
+                <div class="team-badge">After Sales</div>
+            </div>
+            <div class="period-selector">
+                <label>Periode:</label>
+                <select id="month">
+                    <option value="1">Januari</option>
+                    <option value="2">Februari</option>
+                    <option value="3">Maret</option>
+                    <option value="4">April</option>
+                    <option value="5">Mei</option>
+                    <option value="6">Juni</option>
+                    <option value="7">Juli</option>
+                    <option value="8">Agustus</option>
+                    <option value="9">September</option>
+                    <option value="10">Oktober</option>
+                    <option value="11">November</option>
+                    <option value="12">Desember</option>
+                </select>
+                <select id="year">
+                    <option value="2024">2024</option>
+                    <option value="2025" selected>2025</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                </select>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Target Section -->
+        <section class="targets-section no-print">
+            <h2 class="section-title">Target Bulanan (Adjustable)</h2>
+            <div class="targets-grid">
+                <div class="target-item">
+                    <label>Target Retensi Murid (%) <span class="bobot-badge">Bobot 30%</span></label>
+                    <input type="number" id="targetRetensi" value="58" min="0" max="100" onchange="recalculateAll()">
+                </div>
+                <div class="target-item">
+                    <label>Cap Retensi (%)</label>
+                    <input type="number" id="capRetensi" value="100" min="0" max="100" onchange="recalculateAll()">
+                </div>
+                <div class="target-item">
+                    <label>Target Perpanjangan (orang) <span class="bobot-badge">Bobot 15%</span></label>
+                    <input type="number" id="targetPerpanjangan" value="10" min="0" onchange="recalculateAll()">
+                </div>
+                <div class="target-item">
+                    <label>Cap Perpanjangan (orang)</label>
+                    <input type="number" id="capPerpanjangan" value="15" min="0" onchange="recalculateAll()">
+                </div>
+                <div class="target-item">
+                    <label>Target Kepuasan (rating) <span class="bobot-badge">Bobot 15%</span></label>
+                    <input type="number" id="targetKepuasan" value="4.5" min="0" max="5" step="0.1" onchange="recalculateAll()">
+                </div>
+                <div class="target-item">
+                    <label>Cap Kepuasan (rating)</label>
+                    <input type="number" id="capKepuasan" value="5" min="0" max="5" step="0.1" onchange="recalculateAll()">
+                </div>
+                <div class="target-item">
+                    <label>Target Complain Selesai (%) <span class="bobot-badge">Bobot 15%</span></label>
+                    <input type="number" id="targetComplain" value="100" min="0" max="100" onchange="recalculateAll()">
+                </div>
+                <div class="target-item">
+                    <label>Target Akurasi (max error) <span class="bobot-badge">Bobot 10%</span></label>
+                    <input type="number" id="targetAkurasi" value="2" min="0" onchange="recalculateAll()">
+                </div>
+                <div class="target-item">
+                    <label>Cap Akurasi (error)</label>
+                    <input type="number" id="capAkurasi" value="0" min="0" onchange="recalculateAll()">
+                </div>
+                <div class="target-item">
+                    <label>Target Fasilitas Bonus (%) <span class="bobot-badge">Bobot 5%</span></label>
+                    <input type="number" id="targetBonus" value="100" min="0" max="100" onchange="recalculateAll()">
+                </div>
+                <div class="target-item">
+                    <label>Target Pemahaman Tools (%) <span class="bobot-badge">Bobot 5%</span></label>
+                    <input type="number" id="targetTools" value="90" min="0" max="100" onchange="recalculateAll()">
+                </div>
+                <div class="target-item">
+                    <label>Cap Pemahaman Tools (%)</label>
+                    <input type="number" id="capTools" value="100" min="0" max="100" onchange="recalculateAll()">
+                </div>
+                <div class="target-item">
+                    <label>Target Kolaborasi (%) <span class="bobot-badge">Bobot 5%</span></label>
+                    <input type="number" id="targetKolaborasi" value="100" min="0" max="100" onchange="recalculateAll()">
+                </div>
+            </div>
+        </section>
+        <!-- Employee Cards Section -->
+        <section class="employees-section no-print">
+            <h2 class="section-title">Data Karyawan</h2>
+            <div class="employees-grid" id="employeesGrid">
+                <!-- Cards generated by JS -->
+            </div>
+        </section>
+        <!-- PDF Preview Section -->
+        <section class="preview-section">
+            <h2 class="section-title no-print">Preview Report (Hasil Download)</h2>
+            <div class="preview-container">
+                <div class="pdf-content" id="pdfContent">
+                    <!-- PDF Header -->
+                    <div class="pdf-header">
+                        <div class="pdf-brand">
+                            <h2>Golden English Bekasi</h2>
+                            <p>KPI Report - After Sales Team</p>
+                        </div>
+                        <div class="pdf-period">
+                            <div class="period" id="pdfPeriod">Januari</div>
+                            <div class="year" id="pdfYear">2025</div>
+                        </div>
+                    </div>
+                    <!-- Stats Grid -->
+                    <div class="pdf-stats-grid">
+                        <div class="pdf-stat-card">
+                            <div class="pdf-stat-value" id="pdfAvgScore">0%</div>
+                            <div class="pdf-stat-label">Rata-rata Score</div>
+                        </div>
+                        <div class="pdf-stat-card">
+                            <div class="pdf-stat-value" id="pdfAvgRetention">0%</div>
+                            <div class="pdf-stat-label">Rata-rata Retensi</div>
+                        </div>
+                        <div class="pdf-stat-card">
+                            <div class="pdf-stat-value" id="pdfTotalPerpanjangan">0</div>
+                            <div class="pdf-stat-label">Total Perpanjangan</div>
+                        </div>
+                        <div class="pdf-stat-card">
+                            <div class="pdf-stat-value" id="pdfAvgSatisfaction">0</div>
+                            <div class="pdf-stat-label">Rata-rata Kepuasan</div>
+                        </div>
+                    </div>
+                    <!-- Chart -->
+                    <div class="pdf-chart-container">
+                        <h3 class="pdf-chart-title">Perbandingan Performa</h3>
+                        <canvas id="performanceChart" height="120"></canvas>
+                    </div>
+                    <!-- Ranking Table -->
+                    <div class="pdf-ranking-section">
+                        <h3 class="pdf-ranking-title">Ranking Karyawan</h3>
+                        <table class="pdf-ranking-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Nama</th>
+                                    <th>Score</th>
+                                    <th>Retensi</th>
+                                    <th>Kepuasan</th>
+                                    <th>Grade</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pdfRankingBody">
+                                <!-- Generated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Insight -->
+                    <div class="pdf-insight-section">
+                        <div class="pdf-insight-header">
+                            <div class="pdf-insight-icon">💡</div>
+                            <div>
+                                <div class="pdf-insight-title">Insight & Rekomendasi</div>
+                                <div class="pdf-insight-author">by M Rafli Febriansyah</div>
+                            </div>
+                        </div>
+                        <div class="pdf-insight-content" id="pdfInsightContent">
+                            Masukkan data untuk melihat insight otomatis.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Actions -->
+            <div class="actions no-print">
+                <button class="btn btn-primary" onclick="exportPDF()">
+                    <span>📄</span> Download Full Report PDF
+                </button>
+                <button class="btn btn-secondary" onclick="resetAllData()">
+                    <span>🔄</span> Reset Semua Data
+                </button>
+            </div>
+        </section>
+    </main>
+    <!-- Modal Preview Individual -->
+    <div id="previewModal" class="modal-overlay" onclick="closePreviewModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Preview KPI Individual</h3>
+                <button class="modal-close" onclick="closePreviewModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalPreviewContent">
+                <!-- Content generated by JS -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closePreviewModal()">Tutup</button>
+                <button class="btn btn-primary" id="modalDownloadBtn">
+                    <span>📄</span> Download PDF
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="footer no-print">
+        <p>© 2025 <span class="brand-name">Golden English Bekasi</span> - KPI Generator v2.0 | After Sales Team</p>
+    </footer>
+    <!-- Hidden container for individual PDF -->
+    <div id="individualPdfContainer" style="position: absolute; left: -9999px; top: 0;"></div>
+    <script>
+        // Employee Data
+        const employees = [
+            { id: 'indah', name: 'Indah Pratiwi', initials: 'IP' },
+            { id: 'jefry', name: 'Jefry Amando', initials: 'JA' },
+            { id: 'ekky', name: 'Ekky Yudha Pratomo', initials: 'EY' }
+        ];
+        // KPI Config with weights (sesuai gambar)
+        const kpiWeights = {
+            retensi: 30, // Financial
+            perpanjangan: 15, // Financial
+            kepuasan: 15, // Customer
+            complain: 15, // Customer
+            akurasi: 10, // Internal Process
+            bonus: 5, // Internal Process
+            tools: 5, // Learning & Growth
+            kolaborasi: 5 // Learning & Growth
+        };
+        let performanceChart;
+        // Generate Employee Cards
+        function generateEmployeeCards() {
+            const grid = document.getElementById('employeesGrid');
+            grid.innerHTML = '';
+            employees.forEach(emp => {
+                const card = document.createElement('div');
+                card.className = 'employee-card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="employee-info">
+                            <div class="employee-avatar">${emp.initials}</div>
+                            <div>
+                                <div class="employee-name">${emp.name}</div>
+                                <div class="employee-role">After Sales Staff</div>
+                            </div>
+                        </div>
+                        <div class="score-badge">
+                            <div class="score-value" id="score-${emp.id}">0%</div>
+                            <div class="score-label">Total Score</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="metrics-grid">
+                            <!-- Financial -->
+                            <div class="category-divider">Financial (45%)</div>
+                            <div class="metric-item">
+                                <div class="metric-label">Jumlah Prospek Retensi <span class="data-tag">DATA</span></div>
+                                <input type="number" class="metric-input" id="prospekRetensi-${emp.id}"
+                                    placeholder="Jumlah prospek" min="0" onchange="calculateRetensi('${emp.id}')">
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">Jumlah Closing Retensi <span class="data-tag">DATA</span></div>
+                                <input type="number" class="metric-input" id="closingRetensi-${emp.id}"
+                                    placeholder="Jumlah closing" min="0" onchange="calculateRetensi('${emp.id}')">
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">Retensi Murid (%) <span class="bobot">30%</span></div>
+                                <input type="text" class="metric-input" id="retensi-${emp.id}"
+                                    placeholder="Auto" readonly>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">Jumlah Perpanjangan <span class="bobot">15%</span></div>
+                                <input type="number" class="metric-input" id="perpanjangan-${emp.id}"
+                                    placeholder="Jumlah orang" min="0" onchange="calculateScore('${emp.id}')">
+                            </div>
+                            <!-- Customer -->
+                            <div class="category-divider">Customer (30%)</div>
+                            <div class="metric-item">
+                                <div class="metric-label">Kepuasan Murid (1-5) <span class="bobot">15%</span></div>
+                                <input type="number" class="metric-input" id="kepuasan-${emp.id}"
+                                    placeholder="Rating" min="1" max="5" step="0.1" onchange="calculateScore('${emp.id}')">
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">Complain Terselesaikan (%) <span class="bobot">15%</span></div>
+                                <input type="number" class="metric-input" id="complain-${emp.id}"
+                                    placeholder="Persentase" min="0" max="100" onchange="calculateScore('${emp.id}')">
+                            </div>
+                            <!-- Internal Process -->
+                            <div class="category-divider">Internal Process (15%)</div>
+                            <div class="metric-item">
+                                <div class="metric-label">Kesalahan Input Data <span class="bobot">10%</span></div>
+                                <input type="number" class="metric-input" id="akurasi-${emp.id}"
+                                    placeholder="Jumlah error" min="0" onchange="calculateScore('${emp.id}')">
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">Fasilitas Bonus Terpenuhi (%) <span class="bobot">5%</span></div>
+                                <input type="number" class="metric-input" id="bonus-${emp.id}"
+                                    placeholder="Persentase" min="0" max="100" onchange="calculateScore('${emp.id}')">
+                            </div>
+                            <!-- Learning & Growth -->
+                            <div class="category-divider">Learning & Growth (10%)</div>
+                            <div class="metric-item">
+                                <div class="metric-label">Pemahaman Tools (%) <span class="bobot">5%</span></div>
+                                <input type="number" class="metric-input" id="tools-${emp.id}"
+                                    placeholder="Skor tes" min="0" max="100" onchange="calculateScore('${emp.id}')">
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-label">Kolaborasi Case Aktif (%) <span class="bobot">5%</span></div>
+                                <input type="number" class="metric-input" id="kolaborasi-${emp.id}"
+                                    placeholder="Persentase" min="0" max="100" onchange="calculateScore('${emp.id}')">
+                            </div>
+                        </div>
+                        <div class="feedback-section">
+                            <label class="feedback-label">Feedback & Catatan</label>
+                            <textarea class="feedback-textarea" id="feedback-${emp.id}"
+                                placeholder="Masukkan feedback..." onchange="updatePreview()"></textarea>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn-preview-individual" onclick="showIndividualPreview('${emp.id}')">
+                            <span>👁️</span> Preview
+                        </button>
+                        <button class="btn-download-individual" onclick="exportIndividualPDF('${emp.id}')">
+                            <span>📄</span> Download PDF
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        // Get targets from inputs
+        function getTargets() {
+            return {
+                retensi: { target: parseFloat(document.getElementById('targetRetensi').value) || 58, cap: parseFloat(document.getElementById('capRetensi').value) || 100 },
+                perpanjangan: { target: parseInt(document.getElementById('targetPerpanjangan').value) || 10, cap: parseInt(document.getElementById('capPerpanjangan').value) || 15 },
+                kepuasan: { target: parseFloat(document.getElementById('targetKepuasan').value) || 4.5, cap: parseFloat(document.getElementById('capKepuasan').value) || 5 },
+                complain: { target: parseInt(document.getElementById('targetComplain').value) || 100 },
+                akurasi: { target: parseInt(document.getElementById('targetAkurasi').value) || 2, cap: parseInt(document.getElementById('capAkurasi').value) || 0 },
+                bonus: { target: parseInt(document.getElementById('targetBonus').value) || 100 },
+                tools: { target: parseInt(document.getElementById('targetTools').value) || 90, cap: parseInt(document.getElementById('capTools').value) || 100 },
+                kolaborasi: { target: parseInt(document.getElementById('targetKolaborasi').value) || 100 }
+            };
+        }
+        // Calculate Retensi from Prospek & Closing
+        function calculateRetensi(empId) {
+            const prospek = parseInt(document.getElementById(`prospekRetensi-${empId}`).value) || 0;
+            const closing = parseInt(document.getElementById(`closingRetensi-${empId}`).value) || 0;
+           
+            let percentage = 0;
+            if (prospek > 0) {
+                percentage = (closing / prospek) * 100;
+            }
+           
+            document.getElementById(`retensi-${empId}`).value = percentage.toFixed(1);
+            calculateScore(empId);
+        }
+        // Calculate Score
+        function calculateScore(empId) {
+            const targets = getTargets();
+            let totalScore = 0;
+            // Retensi (30%) - higher is better, with cap
+            const retensi = parseFloat(document.getElementById(`retensi-${empId}`).value) || 0;
+            let retensiScore = 0;
+            if (retensi >= targets.retensi.cap) {
+                retensiScore = 100;
+            } else if (retensi >= targets.retensi.target) {
+                retensiScore = 100;
+            } else {
+                retensiScore = (retensi / targets.retensi.target) * 100;
+            }
+            totalScore += (retensiScore * kpiWeights.retensi) / 100;
+            // Perpanjangan (15%) - higher is better, with cap
+            const perpanjangan = parseInt(document.getElementById(`perpanjangan-${empId}`).value) || 0;
+            let perpanjanganScore = 0;
+            if (perpanjangan >= targets.perpanjangan.cap) {
+                perpanjanganScore = 100;
+            } else if (perpanjangan >= targets.perpanjangan.target) {
+                perpanjanganScore = 100;
+            } else {
+                perpanjanganScore = (perpanjangan / targets.perpanjangan.target) * 100;
+            }
+            totalScore += (perpanjanganScore * kpiWeights.perpanjangan) / 100;
+            // Kepuasan (15%) - higher is better
+            const kepuasan = parseFloat(document.getElementById(`kepuasan-${empId}`).value) || 0;
+            let kepuasanScore = 0;
+            if (kepuasan >= targets.kepuasan.cap) {
+                kepuasanScore = 100;
+            } else if (kepuasan >= targets.kepuasan.target) {
+                kepuasanScore = 100;
+            } else {
+                kepuasanScore = (kepuasan / targets.kepuasan.target) * 100;
+            }
+            totalScore += (kepuasanScore * kpiWeights.kepuasan) / 100;
+            // Complain (15%) - higher percentage is better
+            const complain = parseInt(document.getElementById(`complain-${empId}`).value) || 0;
+            let complainScore = 0;
+            if (complain > 0) {
+                complainScore = (complain / targets.complain.target) * 100;
+                complainScore = Math.min(complainScore, 100);
+            }
+            totalScore += (complainScore * kpiWeights.complain) / 100;
+            // Akurasi (10%) - lower errors is better (inverse)
+            const akurasi = parseInt(document.getElementById(`akurasi-${empId}`).value);
+            let akurasiScore = 0;
+            if (akurasi !== '' && !isNaN(akurasi)) {
+                if (akurasi <= targets.akurasi.cap) {
+                    akurasiScore = 100;
+                } else if (akurasi === 1) {
+                    akurasiScore = 75;
+                } else if (akurasi <= targets.akurasi.target) {
+                    akurasiScore = 50;
+                } else {
+                    akurasiScore = 0;
+                }
+            }
+            totalScore += (akurasiScore * kpiWeights.akurasi) / 100;
+            // Bonus (5%)
+            const bonus = parseInt(document.getElementById(`bonus-${empId}`).value) || 0;
+            let bonusScore = (bonus / targets.bonus.target) * 100;
+            bonusScore = Math.min(bonusScore, 100);
+            totalScore += (bonusScore * kpiWeights.bonus) / 100;
+            // Tools (5%)
+            const tools = parseInt(document.getElementById(`tools-${empId}`).value) || 0;
+            let toolsScore = 0;
+            if (tools >= targets.tools.cap) {
+                toolsScore = 100;
+            } else if (tools >= targets.tools.target) {
+                toolsScore = 100;
+            } else {
+                toolsScore = (tools / targets.tools.target) * 100;
+            }
+            totalScore += (toolsScore * kpiWeights.tools) / 100;
+            // Kolaborasi (5%)
+            const kolaborasi = parseInt(document.getElementById(`kolaborasi-${empId}`).value) || 0;
+            let kolaborasiScore = (kolaborasi / targets.kolaborasi.target) * 100;
+            kolaborasiScore = Math.min(kolaborasiScore, 100);
+            totalScore += (kolaborasiScore * kpiWeights.kolaborasi) / 100;
+            document.getElementById(`score-${empId}`).textContent = Math.round(totalScore) + '%';
+            updatePreview();
+        }
+        // Recalculate all when targets change
+        function recalculateAll() {
+            employees.forEach(emp => calculateScore(emp.id));
+        }
+        // Update Preview
+        function updatePreview() {
+            const month = document.getElementById('month');
+            const year = document.getElementById('year').value;
+            const monthName = month.options[month.selectedIndex].text;
+            document.getElementById('pdfPeriod').textContent = monthName;
+            document.getElementById('pdfYear').textContent = year;
+            let totalScores = 0, totalRetention = 0, totalPerpanjangan = 0, totalSatisfaction = 0;
+            const employeeData = [];
+            employees.forEach(emp => {
+                const score = parseInt(document.getElementById(`score-${emp.id}`).textContent) || 0;
+                const retention = parseFloat(document.getElementById(`retensi-${emp.id}`).value) || 0;
+                const perpanjangan = parseInt(document.getElementById(`perpanjangan-${emp.id}`).value) || 0;
+                const satisfaction = parseFloat(document.getElementById(`kepuasan-${emp.id}`).value) || 0;
+                totalScores += score;
+                totalRetention += retention;
+                totalPerpanjangan += perpanjangan;
+                totalSatisfaction += satisfaction;
+                employeeData.push({ name: emp.name, id: emp.id, score, retention, perpanjangan, satisfaction });
+            });
+            const count = employees.length;
+            document.getElementById('pdfAvgScore').textContent = Math.round(totalScores / count) + '%';
+            document.getElementById('pdfAvgRetention').textContent = (totalRetention / count).toFixed(1) + '%';
+            document.getElementById('pdfTotalPerpanjangan').textContent = totalPerpanjangan;
+            document.getElementById('pdfAvgSatisfaction').textContent = (totalSatisfaction / count).toFixed(1) + '/5';
+            updateChart(employeeData);
+            updateRanking(employeeData);
+            updateInsight(employeeData, Math.round(totalScores / count), (totalRetention / count).toFixed(1), (totalSatisfaction / count).toFixed(1));
+        }
+        // Update Chart
+        function updateChart(data) {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            if (performanceChart) performanceChart.destroy();
+            performanceChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(d => d.name.split(' ')[0]),
+                    datasets: [{
+                        label: 'Score (%)',
+                        data: data.map(d => d.score),
+                        backgroundColor: 'rgba(212, 175, 55, 0.8)',
+                        borderColor: '#D4AF37',
+                        borderWidth: 2,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            ticks: { color: '#8A8A8A', callback: v => v + '%' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#8A8A8A' }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+        // Update Ranking
+        function updateRanking(data) {
+            const sorted = [...data].sort((a, b) => b.score - a.score);
+            const tbody = document.getElementById('pdfRankingBody');
+            tbody.innerHTML = '';
+            sorted.forEach((emp, i) => {
+                const rank = i + 1;
+                const rankClass = rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : 'rank-other';
+               
+                let grade, gradeClass;
+                if (emp.score >= 90) { grade = 'A'; gradeClass = 'grade-a'; }
+                else if (emp.score >= 75) { grade = 'B'; gradeClass = 'grade-b'; }
+                else if (emp.score >= 60) { grade = 'C'; gradeClass = 'grade-c'; }
+                else { grade = 'D'; gradeClass = 'grade-d'; }
+                tbody.innerHTML += `
+                    <tr>
+                        <td><span class="rank-badge ${rankClass}">${rank}</span></td>
+                        <td>${emp.name}</td>
+                        <td><strong>${emp.score}%</strong></td>
+                        <td>${emp.retention}%</td>
+                        <td>${emp.satisfaction}/5</td>
+                        <td><span class="grade-badge ${gradeClass}">${grade}</span></td>
+                    </tr>
+                `;
+            });
+        }
+        // Update Insight
+        function updateInsight(data, avgScore, avgRetention, avgSatisfaction) {
+            const sorted = [...data].sort((a, b) => b.score - a.score);
+            const top = sorted[0];
+            let insight = '';
+            if (avgScore === 0) {
+                insight = 'Masukkan data untuk melihat insight otomatis berdasarkan performa tim After Sales.';
+            } else {
+                insight = `Tim After Sales mencatat rata-rata score <strong>${avgScore}%</strong> dengan retensi <strong>${avgRetention}%</strong> dan kepuasan <strong>${avgSatisfaction}/5</strong>. `;
+               
+                if (top && top.score > 0) {
+                    insight += `<strong>${top.name}</strong> memimpin dengan score ${top.score}%. `;
+                }
+                if (avgScore >= 85) {
+                    insight += 'Performa tim sangat baik! Pertahankan kualitas layanan.';
+                } else if (avgScore >= 70) {
+                    insight += 'Performa cukup baik. Tingkatkan retensi dan kecepatan handling complain.';
+                } else if (avgScore >= 60) {
+                    insight += 'Ada ruang improvement. Evaluasi strategi follow-up perpanjangan.';
+                } else {
+                    insight += 'Perlu perhatian khusus. Lakukan review proses after sales.';
+                }
+            }
+            document.getElementById('pdfInsightContent').innerHTML = insight;
+        }
+        // Export Full PDF (Recap Semua Report)
+        async function exportPDF() {
+            console.log('Starting full PDF export...');
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({
+                    orientation: 'landscape',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+                const element = document.getElementById('pdfContent');
+                console.log('Element found:', element);
+                element.style.width = '1122px'; // A4 landscape in px (297mm * 3.78 px/mm approx)
+                element.style.height = 'auto';
+                element.style.backgroundColor = '#0D0D0D';
+
+                // Handle chart
+                const chartCanvas = document.getElementById('performanceChart');
+                const chartImage = chartCanvas.toDataURL('image/png', 1.0);
+                console.log('Chart image created');
+                const chartContainer = document.querySelector('.pdf-chart-container');
+                const tempImg = document.createElement('img');
+                tempImg.src = chartImage;
+                tempImg.style.width = '100%';
+                tempImg.style.height = 'auto';
+                chartContainer.replaceChild(tempImg, chartCanvas);
+
+                // Render with html2canvas
+                const canvas = await html2canvas(element, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#0D0D0D',
+                    windowWidth: element.scrollWidth,
+                    windowHeight: element.scrollHeight,
+                    logging: true,
+                    allowTaint: true,
+                    taintTest: false // Tambah ini untuk avoid black screen
+                });
+                console.log('Canvas created, size:', canvas.width, 'x', canvas.height);
+
+                const imgData = canvas.toDataURL('image/jpeg', 0.95);
+                const imgWidth = 297;
+                const pageHeight = 210;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+
+                doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+                heightLeft -= pageHeight;
+
+                while (heightLeft > 0) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+                    heightLeft -= pageHeight;
+                }
+
+                const month = document.getElementById('month');
+                const year = document.getElementById('year').value;
+                const monthName = month.options[month.selectedIndex].text;
+                doc.save(`KPI_AfterSales_Bekasi_${monthName}_${year}.pdf`);
+                console.log('PDF saved');
+
+                // Restore
+                chartContainer.replaceChild(chartCanvas, tempImg);
+                element.style.width = '';
+                element.style.height = '';
+            } catch (error) {
+                console.error('Error in exportPDF:', error);
+                alert('Terjadi error saat export PDF. Check console (F12) untuk detail.');
+            }
+        }
+        // Show Individual Preview Modal
+        function showIndividualPreview(empId) {
+            console.log('Showing preview for', empId);
+            const emp = employees.find(e => e.id === empId);
+            const month = document.getElementById('month');
+            const year = document.getElementById('year').value;
+            const monthName = month.options[month.selectedIndex].text;
+            const score = document.getElementById(`score-${empId}`).textContent;
+            const feedback = document.getElementById(`feedback-${empId}`).value || 'Tidak ada catatan.';
+            const targets = getTargets();
+            const vals = {
+                prospekRetensi: document.getElementById(`prospekRetensi-${empId}`).value || '-',
+                closingRetensi: document.getElementById(`closingRetensi-${empId}`).value || '-',
+                retensi: document.getElementById(`retensi-${empId}`).value || '-',
+                perpanjangan: document.getElementById(`perpanjangan-${empId}`).value || '-',
+                kepuasan: document.getElementById(`kepuasan-${empId}`).value || '-',
+                complain: document.getElementById(`complain-${empId}`).value || '-',
+                akurasi: document.getElementById(`akurasi-${empId}`).value || '-',
+                bonus: document.getElementById(`bonus-${emp.id}`).value || '-',
+                tools: document.getElementById(`tools-${empId}`).value || '-',
+                kolaborasi: document.getElementById(`kolaborasi-${empId}`).value || '-'
+            };
+            const scoreNum = parseInt(score);
+            let grade, gradeColor;
+            if (scoreNum >= 90) { grade = 'A'; gradeColor = '#4CAF50'; }
+            else if (scoreNum >= 75) { grade = 'B'; gradeColor = '#2196F3'; }
+            else if (scoreNum >= 60) { grade = 'C'; gradeColor = '#FF9800'; }
+            else { grade = 'D'; gradeColor = '#F44336'; }
+            const modalContent = document.getElementById('modalPreviewContent');
+            modalContent.innerHTML = `
+                <div class="individual-preview">
+                    <div class="individual-preview-header">
+                        <div>
+                            <h2 style="font-family: 'Playfair Display', serif; color: var(--gold-primary); margin: 0; font-size: 20px;">Golden English Bekasi</h2>
+                            <p style="color: var(--gray-light); margin: 5px 0 0 0; font-size: 11px;">KPI Report - After Sales</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-family: 'Playfair Display', serif; font-size: 18px;">${monthName}</div>
+                            <div style="color: var(--gray-light); font-size: 12px;">${year}</div>
+                        </div>
+                    </div>
+                    <div class="individual-preview-employee">
+                        <div class="individual-preview-avatar">${emp.initials}</div>
+                        <div>
+                            <div style="font-size: 15px; font-weight: 600;">${emp.name}</div>
+                            <div style="font-size: 10px; color: var(--gray-light); text-transform: uppercase; letter-spacing: 1px;">After Sales Staff</div>
+                        </div>
+                        <div class="individual-preview-score">
+                            <div class="value">${score}</div>
+                            <div class="label">Total Score</div>
+                        </div>
+                    </div>
+                    <table class="individual-preview-table">
+                        <thead>
+                            <tr>
+                                <th>Kategori</th>
+                                <th>KPI</th>
+                                <th>Nilai</th>
+                                <th>Target</th>
+                                <th>Bobot</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td rowspan="4">Financial</td><td>Prospek Retensi</td><td>${vals.prospekRetensi}</td><td>-</td><td>Data</td></tr>
+                            <tr><td>Closing Retensi</td><td>${vals.closingRetensi}</td><td>-</td><td>Data</td></tr>
+                            <tr><td>Retensi Murid</td><td>${vals.retensi}%</td><td>${targets.retensi.target}%</td><td>30%</td></tr>
+                            <tr><td>Perpanjangan</td><td>${vals.perpanjangan} orang</td><td>${targets.perpanjangan.target}</td><td>15%</td></tr>
+                            <tr><td rowspan="2">Customer</td><td>Kepuasan Murid</td><td>${vals.kepuasan}/5</td><td>${targets.kepuasan.target}/5</td><td>15%</td></tr>
+                            <tr><td>Complain Terselesaikan</td><td>${vals.complain}%</td><td>${targets.complain.target}%</td><td>15%</td></tr>
+                            <tr><td rowspan="2">Internal Process</td><td>Kesalahan Data</td><td>${vals.akurasi}</td><td>Max ${targets.akurasi.target}</td><td>10%</td></tr>
+                            <tr><td>Fasilitas Bonus</td><td>${vals.bonus}%</td><td>${targets.bonus.target}%</td><td>5%</td></tr>
+                            <tr><td rowspan="2">Learning & Growth</td><td>Pemahaman Tools</td><td>${vals.tools}%</td><td>${targets.tools.target}%</td><td>5%</td></tr>
+                            <tr><td>Kolaborasi</td><td>${vals.kolaborasi}%</td><td>${targets.kolaborasi.target}%</td><td>5%</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="individual-preview-feedback">
+                        <h4>Feedback & Catatan</h4>
+                        <p>${feedback}</p>
+                    </div>
+                    <div class="individual-preview-grade">
+                        <div class="grade-display">
+                            <div class="label">Grade</div>
+                            <div class="value" style="color: ${gradeColor};">${grade}</div>
+                        </div>
+                        <div class="individual-preview-insight">
+                            <h4>Insight</h4>
+                            <div class="author">by M Rafli Febriansyah</div>
+                            <p>${generateIndividualInsight(emp.name, scoreNum, vals, targets)}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            // Set download button action
+            document.getElementById('modalDownloadBtn').onclick = () => {
+                exportIndividualPDF(empId);
+                closePreviewModal();
+            };
+            // Show modal
+            document.getElementById('previewModal').classList.add('active');
+        }
+        // Close Preview Modal
+        function closePreviewModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('previewModal').classList.remove('active');
+        }
+        // Export Individual PDF
+        async function exportIndividualPDF(empId) {
+            console.log('Starting individual PDF export for', empId);
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'pt',
+                    format: 'a4'
+                });
+                const emp = employees.find(e => e.id === empId);
+                const month = document.getElementById('month');
+                const year = document.getElementById('year').value;
+                const monthName = month.options[month.selectedIndex].text;
+                const score = document.getElementById(`score-${empId}`).textContent;
+                const feedback = document.getElementById(`feedback-${empId}`).value || 'Tidak ada catatan.';
+                const targets = getTargets();
+                const vals = {
+                    prospekRetensi: document.getElementById(`prospekRetensi-${empId}`).value || '-',
+                    closingRetensi: document.getElementById(`closingRetensi-${empId}`).value || '-',
+                    retensi: document.getElementById(`retensi-${empId}`).value || '-',
+                    perpanjangan: document.getElementById(`perpanjangan-${empId}`).value || '-',
+                    kepuasan: document.getElementById(`kepuasan-${empId}`).value || '-',
+                    complain: document.getElementById(`complain-${empId}`).value || '-',
+                    akurasi: document.getElementById(`akurasi-${empId}`).value || '-',
+                    bonus: document.getElementById(`bonus-${empId}`).value || '-',
+                    tools: document.getElementById(`tools-${empId}`).value || '-',
+                    kolaborasi: document.getElementById(`kolaborasi-${empId}`).value || '-'
+                };
+                const scoreNum = parseInt(score);
+                let grade, gradeColor;
+                if (scoreNum >= 90) { grade = 'A'; gradeColor = '#4CAF50'; }
+                else if (scoreNum >= 75) { grade = 'B'; gradeColor = '#2196F3'; }
+                else if (scoreNum >= 60) { grade = 'C'; gradeColor = '#FF9800'; }
+                else { grade = 'D'; gradeColor = '#F44336'; }
+
+                // Create temporary element for rendering
+                const tempElement = document.createElement('div');
+                tempElement.style.width = '595pt'; // A4 portrait width
+                tempElement.style.height = 'auto';
+                tempElement.style.backgroundColor = '#0D0D0D';
+                tempElement.style.padding = '20pt';
+                tempElement.style.color = '#fff';
+                tempElement.style.fontFamily = "'Montserrat', sans-serif";
+                tempElement.style.lineHeight = '1.6';
+                tempElement.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2pt solid #D4AF37; padding-bottom: 15pt; margin-bottom: 15pt;">
+                        <div>
+                            <h2 style="font-family: 'Playfair Display', serif; color: #D4AF37; margin: 0; font-size: 18pt;">Golden English Bekasi</h2>
+                            <p style="color: #8A8A8A; margin: 4pt 0 0 0; font-size: 10pt;">KPI Report - After Sales</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-family: 'Playfair Display', serif; font-size: 16pt; color: #fff;">${monthName}</div>
+                            <div style="color: #8A8A8A; font-size: 12pt;">${year}</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12pt; background: #1A1A1A; padding: 12pt 15pt; border-radius: 8pt; margin-bottom: 15pt;">
+                        <div style="width: 40pt; height: 40pt; background: linear-gradient(135deg, #D4AF37, #A68B28); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 16pt; font-weight: 700; color: #0D0D0D;">${emp.initials}</div>
+                        <div>
+                            <div style="font-size: 14pt; font-weight: 600; color: #fff;">${emp.name}</div>
+                            <div style="font-size: 9pt; color: #8A8A8A; text-transform: uppercase; letter-spacing: 1pt;">After Sales Staff</div>
+                        </div>
+                        <div style="margin-left: auto; text-align: center; background: #0D0D0D; border: 2pt solid #D4AF37; border-radius: 8pt; padding: 8pt 18pt;">
+                            <div style="font-family: 'Playfair Display', serif; font-size: 22pt; color: #D4AF37; font-weight: 700;">${score}</div>
+                            <div style="font-size: 8pt; color: #8A8A8A; text-transform: uppercase; letter-spacing: 1pt;">Total Score</div>
+                        </div>
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 15pt;">
+                        <thead>
+                            <tr style="background: #1A1A1A; color: #D4AF37; border-bottom: 1pt solid #D4AF37;">
+                                <th style="padding: 8pt 6pt; text-align: left; font-size: 8pt;">Kategori</th>
+                                <th style="padding: 8pt 6pt; text-align: left; font-size: 8pt;">KPI</th>
+                                <th style="padding: 8pt 6pt; text-align: left; font-size: 8pt;">Nilai</th>
+                                <th style="padding: 8pt 6pt; text-align: left; font-size: 8pt;">Target</th>
+                                <th style="padding: 8pt 6pt; text-align: left; font-size: 8pt;">Bobot</th>
+                            </tr>
+                        </thead>
+                        <tbody style="color: #fff;">
+                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D; color: #D4AF37;" rowspan="4">Financial</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Prospek Retensi</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.prospekRetensi}</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">-</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Data</td></tr>
+                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Closing Retensi</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.closingRetensi}</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">-</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Data</td></tr>
+                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Retensi Murid</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.retensi}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${targets.retensi.target}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">30%</td></tr>
+                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Perpanjangan</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.perpanjangan} org</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Min ${targets.perpanjangan.target}</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">15%</td></tr>
+                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D; color: #D4AF37;" rowspan="2">Customer</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Kepuasan Murid</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.kepuasan}/5</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${targets.kepuasan.target}/5</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">15%</td></tr>
+                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Complain Selesai</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.complain}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${targets.complain.target}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">15%</td></tr>
+                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D; color: #D4AF37;" rowspan="2">Internal</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Kesalahan Data</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.akurasi}</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Max ${targets.akurasi.target}</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">10%</td></tr>
+                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Fasilitas Bonus</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.bonus}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${targets.bonus.target}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">5%</td></tr>
+                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D; color: #D4AF37;" rowspan="2">Learning</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Pemahaman Tools</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.tools}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Min ${targets.tools.target}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">5%</td></tr>
+                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Kolaborasi</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.kolaborasi}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${targets.kolaborasi.target}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">5%</td></tr>
+                        </tbody>
+                    </table>
+                    <div style="display: flex; gap: 12pt; margin-bottom: 15pt;">
+                        <div style="flex: 1; background: #1A1A1A; padding: 12pt; border-radius: 6pt; border-left: 3pt solid #D4AF37;">
+                            <div style="font-size: 9pt; color: #D4AF37; text-transform: uppercase; margin-bottom: 6pt; font-weight: 600;">Feedback & Catatan</div>
+                            <div style="font-size: 10pt; color: #ccc; line-height: 1.5;">${feedback}</div>
+                        </div>
+                        <div style="width: 80pt; text-align: center; background: #1A1A1A; padding: 15pt 10pt; border-radius: 6pt;">
+                            <div style="font-size: 8pt; color: #8A8A8A; margin-bottom: 6pt; text-transform: uppercase;">Grade</div>
+                            <div style="font-size: 32pt; font-weight: bold; color: ${gradeColor};">${grade}</div>
+                        </div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #D4AF37, #A68B28); padding: 15pt; border-radius: 8pt; color: #0D0D0D;">
+                        <div style="font-size: 10pt; text-transform: uppercase; font-weight: bold; margin-bottom: 2pt;">Insight & Rekomendasi</div>
+                        <div style="font-size: 8pt; opacity: 0.7; margin-bottom: 8pt;">by M Rafli Febriansyah</div>
+                        <div style="font-size: 10pt; line-height: 1.6;">${generateIndividualInsight(emp.name, scoreNum, vals, targets)}</div>
+                    </div>
+                `;
+
+                document.body.appendChild(tempElement); // Append to body for rendering
+
+                const canvas = await html2canvas(tempElement, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#0D0D0D',
+                    logging: true,
+                    allowTaint: true,
+                    taintTest: false
+                });
+                console.log('Individual canvas created');
+                const imgData = canvas.toDataURL('image/jpeg', 0.95);
+                const imgWidth = 595;
+                const pageHeight = 842;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+
+                doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+                heightLeft -= pageHeight;
+
+                while (heightLeft > 0) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+                    heightLeft -= pageHeight;
+                }
+
+                doc.save(`KPI_${emp.name.replace(/\s/g, '_')}_${monthName}_${year}.pdf`);
+                console.log('Individual PDF saved');
+
+                document.body.removeChild(tempElement); // Clean up
+            } catch (error) {
+                console.error('Error in exportIndividualPDF:', error);
+                alert('Terjadi error saat export PDF individual. Check console (F12) untuk detail.');
+            }
+        }
+        // Generate Individual Insight
+        function generateIndividualInsight(name, score, vals, targets) {
+            const firstName = name.split(' ')[0];
+            let insight = `${firstName} mencatat total score ${score}%. `;
+            if (score >= 90) insight += 'Performa sangat baik! ';
+            else if (score >= 75) insight += 'Performa cukup baik. ';
+            else if (score >= 60) insight += 'Ada ruang improvement. ';
+            else insight += 'Perlu pembinaan lebih lanjut. ';
+            const retensi = parseFloat(vals.retensi) || 0;
+            const kepuasan = parseFloat(vals.kepuasan) || 0;
+            if (retensi > 0 && retensi < targets.retensi.target) {
+                insight += `Retensi (${retensi}%) di bawah target ${targets.retensi.target}%. `;
+            }
+            if (kepuasan > 0 && kepuasan < targets.kepuasan.target) {
+                insight += `Kepuasan (${kepuasan}/5) perlu ditingkatkan. `;
+            }
+            return insight;
+        }
+        // Reset All
+        function resetAllData() {
+            if (!confirm('Yakin reset semua data?')) return;
+            employees.forEach(emp => {
+                ['prospekRetensi', 'closingRetensi', 'retensi', 'perpanjangan', 'kepuasan', 'complain', 'akurasi', 'bonus', 'tools', 'kolaborasi'].forEach(field => {
+                    const el = document.getElementById(`${field}-${emp.id}`);
+                    if (el) el.value = '';
+                });
+                document.getElementById(`feedback-${emp.id}`).value = '';
+                document.getElementById(`score-${emp.id}`).textContent = '0%';
+            });
+            updatePreview();
+        }
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            generateEmployeeCards();
+            updatePreview();
+            document.getElementById('month').addEventListener('change', updatePreview);
+            document.getElementById('year').addEventListener('change', updatePreview);
+        });
+    </script>
+</body>
+</html>
