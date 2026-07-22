@@ -925,16 +925,8 @@
             <h2 class="section-title">Target Bulanan (Adjustable)</h2>
             <div class="targets-grid">
                 <div class="target-item">
-                    <label>Target Revenue (Rp) <span class="bobot-badge">Bobot 30%</span></label>
+                    <label>Target Revenue (Rp) <span class="bobot-badge">Bobot 45%</span></label>
                     <input type="number" id="targetRevenue" value="50000000" min="0" onchange="recalculateAll()">
-                </div>
-                <div class="target-item">
-                    <label>Target Perpanjangan (orang) <span class="bobot-badge">Bobot 15%</span></label>
-                    <input type="number" id="targetPerpanjangan" value="10" min="0" onchange="recalculateAll()">
-                </div>
-                <div class="target-item">
-                    <label>Cap Perpanjangan (orang)</label>
-                    <input type="number" id="capPerpanjangan" value="15" min="0" onchange="recalculateAll()">
                 </div>
                 <div class="target-item">
                     <label>Target Kepuasan (rating) <span class="bobot-badge">Bobot 15%</span></label>
@@ -1012,8 +1004,8 @@
                             <div class="pdf-stat-label">Total Revenue</div>
                         </div>
                         <div class="pdf-stat-card">
-                            <div class="pdf-stat-value" id="pdfTotalPerpanjangan">0</div>
-                            <div class="pdf-stat-label">Total Perpanjangan</div>
+                            <div class="pdf-stat-value" id="pdfAvgRevenue">Rp 0</div>
+                            <div class="pdf-stat-label">Rata-rata Revenue</div>
                         </div>
                         <div class="pdf-stat-card">
                             <div class="pdf-stat-value" id="pdfAvgSatisfaction">0</div>
@@ -1103,8 +1095,7 @@
         function initialsOf(name){const p=(name||'').trim().split(/\s+/).filter(Boolean);if(!p.length)return '?';return (p[0][0]+(p[1]?p[1][0]:'')).toUpperCase();}
         // KPI Config with weights
         const kpiWeights = {
-            revenue: 30, // Financial
-            perpanjangan: 15, // Financial
+            revenue: 45, // Financial
             kepuasan: 15, // Customer
             complain: 15, // Customer
             akurasi: 10, // Internal Process
@@ -1137,12 +1128,8 @@
                         <div class="metrics-grid">
                             <div class="category-divider">Financial (45%)</div>
                             <div class="metric-item">
-                                <div class="metric-label">Revenue Achieved (Rp) <span class="bobot">30%</span></div>
+                                <div class="metric-label">Revenue Achieved (Rp) <span class="bobot">45%</span></div>
                                 <input type="number" class="metric-input" id="revenue-${emp.id}" placeholder="0" min="0" onchange="calculateScore(${emp.id})">
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-label">Jumlah Perpanjangan <span class="bobot">15%</span></div>
-                                <input type="number" class="metric-input" id="perpanjangan-${emp.id}" placeholder="Jumlah orang" min="0" onchange="calculateScore(${emp.id})">
                             </div>
                             <div class="category-divider">Customer (30%)</div>
                             <div class="metric-item">
@@ -1216,7 +1203,6 @@
         function getTargets() {
             return {
                 revenue: { target: parseFloat(document.getElementById('targetRevenue').value) || 50000000 },
-                perpanjangan: { target: parseInt(document.getElementById('targetPerpanjangan').value) || 10, cap: parseInt(document.getElementById('capPerpanjangan').value) || 15 },
                 kepuasan: { target: parseFloat(document.getElementById('targetKepuasan').value) || 4.5, cap: parseFloat(document.getElementById('capKepuasan').value) || 5 },
                 complain: { target: parseInt(document.getElementById('targetComplain').value) || 100 },
                 akurasi: { target: parseInt(document.getElementById('targetAkurasi').value) || 2, cap: parseInt(document.getElementById('capAkurasi').value) || 0 },
@@ -1233,17 +1219,6 @@
             const revenue = parseFloat(document.getElementById(`revenue-${empId}`).value) || 0;
             const revenueScore = Math.min((revenue / targets.revenue.target) * 100, 100);
             totalScore += (revenueScore * kpiWeights.revenue) / 100;
-            // Perpanjangan (15%) - higher is better, with cap
-            const perpanjangan = parseInt(document.getElementById(`perpanjangan-${empId}`).value) || 0;
-            let perpanjanganScore = 0;
-            if (perpanjangan >= targets.perpanjangan.cap) {
-                perpanjanganScore = 100;
-            } else if (perpanjangan >= targets.perpanjangan.target) {
-                perpanjanganScore = 100;
-            } else {
-                perpanjanganScore = (perpanjangan / targets.perpanjangan.target) * 100;
-            }
-            totalScore += (perpanjanganScore * kpiWeights.perpanjangan) / 100;
             // Kepuasan (15%) - higher is better
             const kepuasan = parseFloat(document.getElementById(`kepuasan-${empId}`).value) || 0;
             let kepuasanScore = 0;
@@ -1313,23 +1288,21 @@
             const monthName = month.options[month.selectedIndex].text;
             document.getElementById('pdfPeriod').textContent = monthName;
             document.getElementById('pdfYear').textContent = year;
-            let totalScores = 0, totalRevenue = 0, totalPerpanjangan = 0, totalSatisfaction = 0;
+            let totalScores = 0, totalRevenue = 0, totalSatisfaction = 0;
             const employeeData = [];
             employees.forEach(emp => {
                 const score = parseInt(document.getElementById(`score-${emp.id}`).textContent) || 0;
                 const revenue = parseFloat(document.getElementById(`revenue-${emp.id}`).value) || 0;
-                const perpanjangan = parseInt(document.getElementById(`perpanjangan-${emp.id}`).value) || 0;
                 const satisfaction = parseFloat(document.getElementById(`kepuasan-${emp.id}`).value) || 0;
                 totalScores += score;
                 totalRevenue += revenue;
-                totalPerpanjangan += perpanjangan;
                 totalSatisfaction += satisfaction;
-                employeeData.push({ name: emp.name, id: emp.id, score, revenue, perpanjangan, satisfaction });
+                employeeData.push({ name: emp.name, id: emp.id, score, revenue, satisfaction });
             });
             const count = employees.length;
             document.getElementById('pdfAvgScore').textContent = Math.round(totalScores / count) + '%';
             document.getElementById('pdfTotalRevenue').textContent = 'Rp ' + totalRevenue.toLocaleString('id-ID');
-            document.getElementById('pdfTotalPerpanjangan').textContent = totalPerpanjangan;
+            document.getElementById('pdfAvgRevenue').textContent = 'Rp ' + Math.round(totalRevenue / count).toLocaleString('id-ID');
             document.getElementById('pdfAvgSatisfaction').textContent = (totalSatisfaction / count).toFixed(1) + '/5';
             updateChart(employeeData);
             updateRanking(employeeData);
@@ -1413,9 +1386,9 @@
                 if (avgScore >= 85) {
                     insight += 'Performa tim sangat baik! Pertahankan kualitas layanan.';
                 } else if (avgScore >= 70) {
-                    insight += 'Performa cukup baik. Tingkatkan revenue perpanjangan dan kecepatan handling complain.';
+                    insight += 'Performa cukup baik. Tingkatkan revenue dan kecepatan handling complain.';
                 } else if (avgScore >= 60) {
-                    insight += 'Ada ruang improvement. Evaluasi strategi follow-up perpanjangan.';
+                    insight += 'Ada ruang improvement. Evaluasi strategi retensi & follow-up revenue.';
                 } else {
                     insight += 'Perlu perhatian khusus. Lakukan review proses after sales.';
                 }
@@ -1506,7 +1479,6 @@
             const targets = getTargets();
             const vals = {
                 revenue: document.getElementById(`revenue-${empId}`).value || '-',
-                perpanjangan: document.getElementById(`perpanjangan-${empId}`).value || '-',
                 kepuasan: document.getElementById(`kepuasan-${empId}`).value || '-',
                 complain: document.getElementById(`complain-${empId}`).value || '-',
                 akurasi: document.getElementById(`akurasi-${empId}`).value || '-',
@@ -1555,8 +1527,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td rowspan="2">Financial</td><td>Revenue</td><td>${vals.revenue === '-' ? '-' : 'Rp ' + Number(vals.revenue).toLocaleString('id-ID')}</td><td>Rp ${Number(targets.revenue.target).toLocaleString('id-ID')}</td><td>30%</td></tr>
-                            <tr><td>Perpanjangan</td><td>${vals.perpanjangan} orang</td><td>${targets.perpanjangan.target}</td><td>15%</td></tr>
+                            <tr><td>Financial</td><td>Revenue</td><td>${vals.revenue === '-' ? '-' : 'Rp ' + Number(vals.revenue).toLocaleString('id-ID')}</td><td>Rp ${Number(targets.revenue.target).toLocaleString('id-ID')}</td><td>45%</td></tr>
                             <tr><td rowspan="2">Customer</td><td>Kepuasan Murid</td><td>${vals.kepuasan}/5</td><td>${targets.kepuasan.target}/5</td><td>15%</td></tr>
                             <tr><td>Complain Terselesaikan</td><td>${vals.complain}%</td><td>${targets.complain.target}%</td><td>15%</td></tr>
                             <tr><td rowspan="2">Internal Process</td><td>Kesalahan Data</td><td>${vals.akurasi}</td><td>Max ${targets.akurasi.target}</td><td>10%</td></tr>
@@ -1614,7 +1585,6 @@
                 const targets = getTargets();
                 const vals = {
                     revenue: document.getElementById(`revenue-${empId}`).value || '-',
-                    perpanjangan: document.getElementById(`perpanjangan-${empId}`).value || '-',
                     kepuasan: document.getElementById(`kepuasan-${empId}`).value || '-',
                     complain: document.getElementById(`complain-${empId}`).value || '-',
                     akurasi: document.getElementById(`akurasi-${empId}`).value || '-',
@@ -1671,8 +1641,7 @@
                             </tr>
                         </thead>
                         <tbody style="color: #fff;">
-                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D; color: #D4AF37;" rowspan="2">Financial</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Revenue</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.revenue === '-' ? '-' : 'Rp ' + Number(vals.revenue).toLocaleString('id-ID')}</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Rp ${Number(targets.revenue.target).toLocaleString('id-ID')}</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">30%</td></tr>
-                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Perpanjangan</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.perpanjangan} org</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Min ${targets.perpanjangan.target}</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">15%</td></tr>
+                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D; color: #D4AF37;">Financial</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Revenue</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.revenue === '-' ? '-' : 'Rp ' + Number(vals.revenue).toLocaleString('id-ID')}</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Rp ${Number(targets.revenue.target).toLocaleString('id-ID')}</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">45%</td></tr>
                             <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D; color: #D4AF37;" rowspan="2">Customer</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Kepuasan Murid</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.kepuasan}/5</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${targets.kepuasan.target}/5</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">15%</td></tr>
                             <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Complain Selesai</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.complain}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${targets.complain.target}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">15%</td></tr>
                             <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D; color: #D4AF37;" rowspan="2">Internal</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Kesalahan Data</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.akurasi}</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Max ${targets.akurasi.target}</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">10%</td></tr>
@@ -1757,7 +1726,7 @@
         function resetAllData() {
             if (!confirm('Yakin reset semua data?')) return;
             employees.forEach(emp => {
-                ['revenue', 'perpanjangan', 'kepuasan', 'complain', 'akurasi', 'bonus', 'tools', 'kolaborasi'].forEach(field => {
+                ['revenue', 'kepuasan', 'complain', 'akurasi', 'bonus', 'tools', 'kolaborasi'].forEach(field => {
                     const el = document.getElementById(`${field}-${emp.id}`);
                     if (el) el.value = '';
                 });
