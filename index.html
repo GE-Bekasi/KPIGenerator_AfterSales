@@ -1,1747 +1,456 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KPI Generator - After Sales Golden English Bekasi</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <style>
-        :root {
-            --gold-primary: #D4AF37;
-            --gold-light: #F4E4BC;
-            --gold-dark: #A68B28;
-            --gold-glow: rgba(212, 175, 55, 0.3);
-            --black-primary: #0D0D0D;
-            --black-light: #1A1A1A;
-            --black-card: #141414;
-            --gray-dark: #2D2D2D;
-            --gray-medium: #4A4A4A;
-            --gray-light: #8A8A8A;
-            --white: #FFFFFF;
-            --success: #4CAF50;
-            --warning: #FF9800;
-            --danger: #F44336;
-        }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: var(--black-primary);
-            color: var(--white);
-            min-height: 100vh;
-            line-height: 1.6;
-        }
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, var(--black-light) 0%, var(--black-primary) 100%);
-            border-bottom: 2px solid var(--gold-primary);
-            padding: 25px 40px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .brand-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--black-primary);
-        }
-        .brand-text h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--gold-primary);
-        }
-        .brand-text p {
-            font-size: 11px;
-            color: var(--gray-light);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        .team-badge {
-            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
-            color: var(--black-primary);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        .period-selector {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .period-selector label {
-            font-size: 12px;
-            color: var(--gray-light);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .period-selector select,
-        .period-selector input {
-            background: var(--black-card);
-            border: 1px solid var(--gray-dark);
-            color: var(--white);
-            padding: 10px 16px;
-            border-radius: 6px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 13px;
-            cursor: pointer;
-        }
-        .period-selector select:focus,
-        .period-selector input:focus {
-            outline: none;
-            border-color: var(--gold-primary);
-        }
-        /* Main Content */
-        .main-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 30px 40px;
-        }
-        /* Section Title */
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 20px;
-            color: var(--gold-primary);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .section-title::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, var(--gold-primary) 0%, transparent 100%);
-        }
-        /* Target Section */
-        .targets-section {
-            background: var(--black-card);
-            border: 1px solid var(--gray-dark);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 30px;
-        }
-        .targets-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-        }
-        .target-item {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .target-item label {
-            font-size: 10px;
-            color: var(--gray-light);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .target-item input {
-            background: var(--black-light);
-            border: 1px solid var(--gray-dark);
-            color: var(--gold-light);
-            padding: 10px 14px;
-            border-radius: 6px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-        }
-        .target-item input:focus {
-            outline: none;
-            border-color: var(--gold-primary);
-        }
-        .target-item input[readonly] {
-            background: var(--gray-dark);
-            cursor: not-allowed;
-            color: var(--gray-light);
-        }
-        .target-item .bobot-badge {
-            font-size: 9px;
-            color: var(--gold-primary);
-            font-weight: 600;
-        }
-        /* Employee Cards */
-        .employees-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-        .employee-card {
-            background: var(--black-card);
-            border: 1px solid var(--gray-dark);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        .card-header {
-            background: linear-gradient(135deg, var(--black-light) 0%, var(--gray-dark) 100%);
-            padding: 18px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--gray-dark);
-        }
-        .employee-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .employee-avatar {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--black-primary);
-        }
-        .employee-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--white);
-        }
-        .employee-role {
-            font-size: 10px;
-            color: var(--gray-light);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .score-badge {
-            background: var(--black-primary);
-            border: 2px solid var(--gold-primary);
-            border-radius: 10px;
-            padding: 8px 16px;
-            text-align: center;
-        }
-        .score-badge .score-value {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--gold-primary);
-        }
-        .score-badge .score-label {
-            font-size: 9px;
-            color: var(--gray-light);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .card-body {
-            padding: 20px;
-        }
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        .metric-item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .metric-item.full-width {
-            grid-column: 1 / -1;
-        }
-        .metric-label {
-            font-size: 9px;
-            color: var(--gray-light);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .metric-label .bobot {
-            background: var(--gold-dark);
-            color: var(--black-primary);
-            padding: 1px 5px;
-            border-radius: 3px;
-            font-size: 8px;
-            font-weight: 700;
-        }
-        .metric-label .data-tag {
-            background: var(--gray-dark);
-            color: var(--gray-light);
-            padding: 1px 5px;
-            border-radius: 3px;
-            font-size: 8px;
-            font-weight: 600;
-        }
-        .metric-input {
-            background: var(--black-light);
-            border: 1px solid var(--gray-dark);
-            color: var(--white);
-            padding: 10px 12px;
-            border-radius: 6px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 13px;
-            width: 100%;
-        }
-        .metric-input:focus {
-            outline: none;
-            border-color: var(--gold-primary);
-        }
-        .metric-input[readonly] {
-            background: var(--gray-dark);
-            color: var(--gold-light);
-            cursor: not-allowed;
-        }
-        .metric-input::placeholder {
-            color: var(--gray-medium);
-            font-size: 11px;
-        }
-        /* Category Divider */
-        .category-divider {
-            grid-column: 1 / -1;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin: 8px 0 4px 0;
-            font-size: 10px;
-            color: var(--gold-primary);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 600;
-        }
-        .category-divider::before,
-        .category-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--gray-dark);
-        }
-        /* Feedback Section */
-        .feedback-section {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid var(--gray-dark);
-        }
-        .feedback-label {
-            font-size: 10px;
-            color: var(--gold-primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-            display: block;
-        }
-        .feedback-textarea {
-            background: var(--black-light);
-            border: 1px solid var(--gray-dark);
-            color: var(--white);
-            padding: 12px;
-            border-radius: 6px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 12px;
-            width: 100%;
-            min-height: 70px;
-            resize: vertical;
-        }
-        .feedback-textarea:focus {
-            outline: none;
-            border-color: var(--gold-primary);
-        }
-        /* Card Footer */
-        .card-footer {
-            padding: 12px 20px;
-            background: var(--black-light);
-            border-top: 1px solid var(--gray-dark);
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-        .btn-preview-individual {
-            background: transparent;
-            color: var(--gold-primary);
-            border: 1px solid var(--gold-primary);
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.3s ease;
-        }
-        .btn-preview-individual:hover {
-            background: var(--gold-primary);
-            color: var(--black-primary);
-        }
-        .btn-download-individual {
-            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
-            color: var(--black-primary);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-download-individual:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px var(--gold-glow);
-        }
-        /* ==================== */
-        /* PDF PREVIEW SECTION */
-        /* ==================== */
-        .preview-section {
-            margin-bottom: 30px;
-        }
-        .preview-container {
-            background: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
-        /* PDF Content - This is what gets exported */
-        .pdf-content {
-            background: var(--black-primary);
-            padding: 25px;
-            width: 100%;
-            color: var(--white);
-            max-height: 70vh; /* Batasi tinggi untuk preview agar tidak overflow */
-            overflow: visible; /* Biarkan konten terlihat penuh */
-        }
-        .pdf-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--gold-primary);
-            margin-bottom: 25px;
-        }
-        .pdf-brand h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            color: var(--gold-primary);
-            margin: 0;
-        }
-        .pdf-brand p {
-            font-size: 12px;
-            color: var(--gray-light);
-            margin: 4px 0 0 0;
-        }
-        .pdf-period {
-            text-align: right;
-        }
-        .pdf-period .period {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            color: var(--white);
-        }
-        .pdf-period .year {
-            font-size: 13px;
-            color: var(--gray-light);
-        }
-        /* Stats Grid */
-        .pdf-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        .pdf-stat-card {
-            background: linear-gradient(135deg, var(--black-light) 0%, var(--gray-dark) 100%);
-            border: 1px solid var(--gray-dark);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-        }
-        .pdf-stat-value {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--gold-primary);
-        }
-        .pdf-stat-label {
-            font-size: 10px;
-            color: var(--gray-light);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 5px;
-        }
-        /* Chart */
-        .pdf-chart-container {
-            background: var(--black-light);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 25px;
-        }
-        .pdf-chart-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            color: var(--gold-primary);
-            margin-bottom: 15px;
-        }
-        /* Ranking Table */
-        .pdf-ranking-section {
-            margin-bottom: 25px;
-        }
-        .pdf-ranking-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            color: var(--gold-primary);
-            margin-bottom: 15px;
-        }
-        .pdf-ranking-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .pdf-ranking-table th {
-            background: var(--black-light);
-            color: var(--gold-primary);
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 2px solid var(--gold-primary);
-        }
-        .pdf-ranking-table td {
-            padding: 14px 15px;
-            border-bottom: 1px solid var(--gray-dark);
-            font-size: 13px;
-        }
-        .rank-badge {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 12px;
-        }
-        .rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: var(--black-primary); }
-        .rank-2 { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); color: var(--black-primary); }
-        .rank-3 { background: linear-gradient(135deg, #CD7F32, #8B4513); color: var(--white); }
-        .rank-other { background: var(--gray-dark); color: var(--gray-light); }
-        .grade-badge {
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 11px;
-            font-weight: 700;
-        }
-        .grade-a { background: rgba(76, 175, 80, 0.2); color: #4CAF50; border: 1px solid #4CAF50; }
-        .grade-b { background: rgba(33, 150, 243, 0.2); color: #2196F3; border: 1px solid #2196F3; }
-        .grade-c { background: rgba(255, 152, 0, 0.2); color: #FF9800; border: 1px solid #FF9800; }
-        .grade-d { background: rgba(244, 67, 54, 0.2); color: #F44336; border: 1px solid #F44336; }
-        /* Insight */
-        .pdf-insight-section {
-            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
-            border-radius: 10px;
-            padding: 20px;
-            color: var(--black-primary);
-        }
-        .pdf-insight-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-        .pdf-insight-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--black-primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-        .pdf-insight-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            font-weight: 700;
-        }
-        .pdf-insight-author {
-            font-size: 11px;
-            opacity: 0.8;
-        }
-        .pdf-insight-content {
-            font-size: 13px;
-            line-height: 1.7;
-        }
-        /* Actions */
-        .actions {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 25px;
-            padding-top: 25px;
-            border-top: 1px solid var(--gray-dark);
-        }
-        .btn {
-            padding: 14px 30px;
-            border-radius: 8px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
-            color: var(--black-primary);
-            border: none;
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px var(--gold-glow);
-        }
-        .btn-secondary {
-            background: transparent;
-            color: var(--gold-primary);
-            border: 2px solid var(--gold-primary);
-        }
-        .btn-secondary:hover {
-            background: var(--gold-primary);
-            color: var(--black-primary);
-        }
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 25px;
-            border-top: 1px solid var(--gray-dark);
-            margin-top: 40px;
-        }
-        .footer p {
-            font-size: 11px;
-            color: var(--gray-light);
-        }
-        .footer .brand-name {
-            color: var(--gold-primary);
-            font-weight: 600;
-        }
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-content { flex-direction: column; text-align: center; }
-            .employees-grid { grid-template-columns: 1fr; }
-            .metrics-grid { grid-template-columns: 1fr; }
-            .pdf-stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .main-content { padding: 20px; }
-        }
-        /* Hidden for PDF export */
-        .no-print { }
-       
-        @media print {
-            .no-print { display: none !important; }
-        }
-        /* Modal Styles */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        .modal-overlay.active {
-            display: flex;
-        }
-        .modal-content {
-            background: var(--black-card);
-            border: 1px solid var(--gold-primary);
-            border-radius: 12px;
-            max-width: 750px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 25px;
-            border-bottom: 1px solid var(--gray-dark);
-        }
-        .modal-header h3 {
-            font-family: 'Playfair Display', serif;
-            color: var(--gold-primary);
-            font-size: 18px;
-            margin: 0;
-        }
-        .modal-close {
-            background: none;
-            border: none;
-            color: var(--gray-light);
-            font-size: 28px;
-            cursor: pointer;
-            line-height: 1;
-        }
-        .modal-close:hover {
-            color: var(--gold-primary);
-        }
-        .modal-body {
-            padding: 25px;
-        }
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            padding: 20px 25px;
-            border-top: 1px solid var(--gray-dark);
-        }
-        /* Individual Preview Card inside Modal */
-        .individual-preview {
-            background: var(--black-primary);
-            border-radius: 10px;
-            padding: 25px;
-        }
-        .individual-preview-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--gold-primary);
-            padding-bottom: 20px;
-            margin-bottom: 20px;
-        }
-        .individual-preview-employee {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: var(--black-light);
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        .individual-preview-avatar {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 20px;
-            font-weight: bold;
-            color: var(--black-primary);
-        }
-        .individual-preview-score {
-            margin-left: auto;
-            text-align: center;
-            background: var(--black-primary);
-            border: 2px solid var(--gold-primary);
-            border-radius: 10px;
-            padding: 10px 20px;
-        }
-        .individual-preview-score .value {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            color: var(--gold-primary);
-            font-weight: bold;
-        }
-        .individual-preview-score .label {
-            font-size: 9px;
-            color: var(--gray-light);
-            text-transform: uppercase;
-        }
-        .individual-preview-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-            margin-bottom: 20px;
-        }
-        .individual-preview-table th {
-            background: var(--black-light);
-            color: var(--gold-primary);
-            padding: 12px;
-            text-align: left;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px solid var(--gold-primary);
-        }
-        .individual-preview-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--gray-dark);
-        }
-        .individual-preview-feedback {
-            background: var(--black-light);
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 3px solid var(--gold-primary);
-            margin-bottom: 20px;
-        }
-        .individual-preview-feedback h4 {
-            font-size: 10px;
-            color: var(--gold-primary);
-            text-transform: uppercase;
-            margin: 0 0 10px 0;
-        }
-        .individual-preview-feedback p {
-            font-size: 12px;
-            color: var(--gray-light);
-            margin: 0;
-            line-height: 1.6;
-        }
-        .individual-preview-grade {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .individual-preview-grade .grade-display {
-            background: var(--black-light);
-            padding: 15px 25px;
-            border-radius: 8px;
-            text-align: center;
-        }
-        .individual-preview-grade .grade-display .label {
-            font-size: 10px;
-            color: var(--gray-light);
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-        .individual-preview-grade .grade-display .value {
-            font-size: 32px;
-            font-weight: bold;
-        }
-        .individual-preview-insight {
-            flex: 1;
-            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
-            padding: 15px;
-            border-radius: 8px;
-            color: var(--black-primary);
-        }
-        .individual-preview-insight h4 {
-            font-size: 10px;
-            text-transform: uppercase;
-            margin: 0 0 5px 0;
-        }
-        .individual-preview-insight .author {
-            font-size: 9px;
-            opacity: 0.8;
-            margin-bottom: 10px;
-        }
-        .individual-preview-insight p {
-            font-size: 12px;
-            line-height: 1.6;
-            margin: 0;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPI Generator - Golden English Bekasi Area (Sales Team)</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
-.employee-name-input{background:transparent;border:none;border-bottom:1px dashed rgba(212,175,55,0.45);color:#FAFAFA;font-size:16px;font-weight:600;font-family:inherit;width:100%;padding:2px 0;margin-bottom:2px;}
-.employee-name-input:focus{outline:none;border-bottom:1px solid #D4AF37;}
-.employee-name-input::placeholder{color:#8A8A8A;font-style:italic;font-weight:400;}
-.employee-delete{background:rgba(255,255,255,0.06);color:#F44336;border:1px solid rgba(244,67,54,0.4);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:13px;font-weight:700;flex:none;transition:all .2s;}
-.employee-delete:hover{background:#F44336;color:#fff;}
-.btn-add-staff{background:linear-gradient(135deg,#B8960C,#D4AF37);color:#0D0D0D;border:none;padding:12px 24px;border-radius:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap;}
-.btn-add-staff:hover{box-shadow:0 5px 20px rgba(212,175,55,0.3);transform:translateY(-2px);}
-.add-staff-bar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin:0 0 20px;flex-wrap:wrap;}
-.add-staff-bar .hint{font-size:12px;color:#8A8A8A;}
+:root{--gold:#D4AF37;--gold-light:#F4E4BC;--gold-dark:#B8960C;--black:#0D0D0D;--black-light:#1A1A1A;--black-lighter:#2D2D2D;--white:#FAFAFA;--gray:#888888;--success:#4CAF50;--warning:#FF9800;--danger:#F44336;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Montserrat',sans-serif;background:var(--black);color:var(--white);min-height:100vh;line-height:1.6;}
+.header{background:linear-gradient(135deg,var(--black-light) 0%,var(--black) 100%);border-bottom:2px solid var(--gold);padding:30px 40px;position:sticky;top:0;z-index:100;}
+.header-content{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;}
+.logo-section h1{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gold);letter-spacing:1px;}
+.logo-section p{font-size:12px;color:var(--gray);text-transform:uppercase;letter-spacing:3px;margin-top:5px;}
+.period-selector{display:flex;gap:15px;align-items:center;}
+.period-selector label{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--gold-light);}
+.period-selector select,.period-selector input{background:var(--black-lighter);border:1px solid var(--gold-dark);color:var(--white);padding:12px 20px;border-radius:4px;font-family:'Montserrat',sans-serif;font-size:14px;cursor:pointer;}
+.container{max-width:1400px;margin:0 auto;padding:40px;}
+.target-section{background:linear-gradient(145deg,var(--black-light) 0%,var(--black-lighter) 100%);border:1px solid var(--gold-dark);border-radius:12px;padding:30px;margin-bottom:30px;}
+.target-section h2{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold);margin-bottom:25px;display:flex;align-items:center;gap:10px;}
+.target-section h2::before{content:'';width:4px;height:24px;background:var(--gold);border-radius:2px;}
+.target-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+.target-item{display:flex;flex-direction:column;gap:8px;}
+.target-item label{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold-light);}
+.target-item .bobot{color:var(--gold);font-weight:700;}
+.target-item input{background:var(--black);border:1px solid var(--black-lighter);color:var(--white);padding:12px 15px;border-radius:6px;font-family:'Montserrat',sans-serif;font-size:14px;}
+.target-item input:focus{outline:none;border-color:var(--gold);}
+.import-bar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:25px;flex-wrap:wrap;background:linear-gradient(145deg,var(--black-light),var(--black-lighter));border:1px dashed var(--gold-dark);border-radius:12px;padding:18px 24px;}
+.import-bar .imp-text{font-size:13px;color:var(--gold-light);}
+.import-bar .imp-text b{color:var(--gold);}
+.import-bar .imp-text span{display:block;font-size:11px;color:var(--gray);margin-top:2px;}
+.import-actions{display:flex;gap:10px;flex-wrap:wrap;}
+.btn-import{background:linear-gradient(90deg,var(--gold-dark),var(--gold));color:var(--black);border:none;padding:13px 26px;border-radius:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:12px;cursor:pointer;white-space:nowrap;}
+.btn-import:hover{box-shadow:0 5px 20px rgba(212,175,55,.3);transform:translateY(-2px);}
+.add-staff-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;gap:15px;}
+.add-staff-bar .hint{font-size:12px;color:var(--gray);}
+.btn-add-staff{background:transparent;color:var(--gold);border:1px solid var(--gold-dark);padding:12px 24px;border-radius:8px;font-family:'Montserrat',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;font-size:12px;cursor:pointer;white-space:nowrap;}
+.btn-add-staff:hover{background:var(--gold);color:var(--black);}
+.employee-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));gap:30px;margin-bottom:40px;}
+.employee-card{background:linear-gradient(145deg,var(--black-light) 0%,var(--black-lighter) 100%);border:1px solid var(--black-lighter);border-radius:16px;overflow:hidden;transition:all .3s ease;}
+.employee-card:hover{border-color:var(--gold-dark);box-shadow:0 10px 40px rgba(212,175,55,.1);}
+.employee-header{background:linear-gradient(90deg,var(--gold-dark) 0%,var(--gold) 100%);padding:18px 25px;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.employee-header-left{display:flex;align-items:center;flex:1;min-width:0;}
+.employee-name-input{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--black);background:transparent;border:none;border-bottom:1px dashed rgba(13,13,13,.4);padding:2px 4px;width:100%;min-width:0;}
+.employee-name-input:focus{outline:none;border-bottom:1px solid var(--black);}
+.employee-name-input::placeholder{color:rgba(13,13,13,.5);font-style:italic;}
+.employee-header-right{display:flex;align-items:center;gap:10px;flex:none;}
+.employee-score{background:var(--black);color:var(--gold);padding:8px 16px;border-radius:20px;font-size:14px;font-weight:700;}
+.employee-delete{background:rgba(13,13,13,.15);color:var(--black);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.employee-delete:hover{background:var(--danger);color:#fff;}
+.employee-body{padding:25px;}
+.metric-group{margin-bottom:20px;}
+.metric-group:last-child{margin-bottom:0;}
+.metric-group-title{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--black-lighter);}
+.metric-row{display:flex;align-items:center;gap:15px;margin-bottom:12px;}
+.metric-row:last-child{margin-bottom:0;}
+.metric-label{flex:1;font-size:12px;color:var(--gray);}
+.metric-label .w{color:var(--gold-dark);font-weight:700;font-size:10px;}
+.metric-input{width:120px;background:var(--black);border:1px solid var(--black-lighter);color:var(--white);padding:10px 12px;border-radius:6px;font-family:'Montserrat',sans-serif;font-size:13px;text-align:center;}
+.metric-input:focus{outline:none;border-color:var(--gold);}
+.metric-score{width:60px;text-align:right;font-size:12px;font-weight:600;}
+.metric-score.excellent{color:var(--success);}.metric-score.good{color:var(--gold);}.metric-score.warning{color:var(--warning);}.metric-score.poor{color:var(--danger);}
+.tracking-section{background:var(--black-lighter);border-radius:8px;padding:15px;margin-top:15px;}
+.tracking-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;}
+.tracking-label{font-size:11px;color:var(--gray);}
+.tracking-value{font-size:14px;font-weight:700;color:var(--gold-light);}
+.feedback-section{margin-top:20px;}
+.feedback-label{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:10px;display:block;}
+.feedback-textarea{width:100%;background:var(--black);border:1px solid var(--black-lighter);color:var(--white);padding:15px;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:12px;resize:vertical;min-height:70px;}
+.feedback-textarea:focus{outline:none;border-color:var(--gold);}
+.individual-export{margin-top:20px;padding-top:20px;border-top:1px solid var(--black-lighter);display:flex;gap:10px;}
+.btn-preview,.btn-individual{flex:1;padding:14px 20px;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;cursor:pointer;}
+.btn-preview{background:var(--black-lighter);border:1px solid var(--gray);color:var(--white);}
+.btn-preview:hover{background:var(--gray);color:var(--black);}
+.btn-individual{background:transparent;border:1px solid var(--gold-dark);color:var(--gold);}
+.btn-individual:hover{background:var(--gold);color:var(--black);}
+.preview-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);z-index:1000;overflow-y:auto;padding:40px 20px;}
+.preview-modal.show{display:block;}
+.preview-container{max-width:800px;margin:0 auto;position:relative;}
+.preview-close{position:fixed;top:20px;right:30px;background:var(--gold);color:var(--black);border:none;width:50px;height:50px;border-radius:50%;font-size:24px;cursor:pointer;z-index:1001;}
+.preview-actions{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;gap:15px;z-index:1001;}
+.preview-content{background:#0D0D0D;border-radius:16px;overflow:hidden;}
+.summary-section{background:linear-gradient(145deg,var(--black-light) 0%,var(--black-lighter) 100%);border:2px solid var(--gold);border-radius:16px;padding:40px;margin-bottom:40px;}
+.summary-header{text-align:center;margin-bottom:40px;}
+.summary-header h2{font-family:'Playfair Display',serif;font-size:28px;color:var(--gold);margin-bottom:10px;}
+.summary-header p{color:var(--gray);font-size:14px;}
+.summary-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin-bottom:40px;}
+.stat-card{background:var(--black);border:1px solid var(--black-lighter);border-radius:12px;padding:25px;text-align:center;}
+.stat-value{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--gold);margin-bottom:8px;}
+.stat-label{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--gray);}
+.chart-container{background:var(--black);border-radius:12px;padding:30px;margin-bottom:30px;}
+.ranking-table{width:100%;border-collapse:collapse;}
+.ranking-table th{background:var(--gold);color:var(--black);padding:15px 20px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:2px;font-weight:600;}
+.ranking-table th:first-child{border-radius:8px 0 0 0;}.ranking-table th:last-child{border-radius:0 8px 0 0;}
+.ranking-table td{padding:18px 20px;border-bottom:1px solid var(--black-lighter);font-size:14px;}
+.ranking-table tr:hover td{background:var(--black-lighter);}
+.rank-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;font-weight:700;font-size:14px;}
+.rank-1{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-dark) 100%);color:var(--black);}
+.rank-2{background:linear-gradient(135deg,#C0C0C0 0%,#A0A0A0 100%);color:var(--black);}
+.rank-3{background:linear-gradient(135deg,#CD7F32 0%,#A0522D 100%);color:var(--white);}
+.rank-other{background:var(--black-lighter);color:var(--gray);}
+.score-bar{height:8px;background:var(--black-lighter);border-radius:4px;overflow:hidden;width:150px;}
+.score-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-dark) 0%,var(--gold) 100%);border-radius:4px;}
+.actions{display:flex;gap:20px;justify-content:center;margin-top:40px;flex-wrap:wrap;}
+.btn{padding:16px 40px;border:none;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:2px;cursor:pointer;}
+.btn-primary{background:linear-gradient(90deg,var(--gold-dark) 0%,var(--gold) 100%);color:var(--black);}
+.btn-secondary{background:transparent;color:var(--gold);border:2px solid var(--gold);}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+.calculating{animation:pulse .5s ease;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.5;}}
+@media (max-width:768px){.header-content{flex-direction:column;gap:20px;}.employee-grid{grid-template-columns:1fr;}.summary-stats{grid-template-columns:repeat(2,1fr);}.container{padding:20px;}}
 </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header no-print">
-        <div class="header-content">
-            <div class="brand">
-                <div class="brand-icon">GE</div>
-                <div class="brand-text">
-                    <h1>Golden English Bekasi</h1>
-                    <p>KPI Generator System</p>
-                </div>
-                <div class="team-badge">After Sales</div>
-            </div>
-            <div class="period-selector">
-                <label>Periode:</label>
-                <select id="month">
-                    <option value="1">Januari</option>
-                    <option value="2">Februari</option>
-                    <option value="3">Maret</option>
-                    <option value="4">April</option>
-                    <option value="5">Mei</option>
-                    <option value="6">Juni</option>
-                    <option value="7">Juli</option>
-                    <option value="8">Agustus</option>
-                    <option value="9">September</option>
-                    <option value="10">Oktober</option>
-                    <option value="11">November</option>
-                    <option value="12">Desember</option>
-                </select>
-                <select id="year">
-                    <option value="2024">2024</option>
-                    <option value="2025" selected>2025</option>
-                    <option value="2026">2026</option>
-                    <option value="2027">2027</option>
-                </select>
-            </div>
-        </div>
-    </header>
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Target Section -->
-        <section class="targets-section no-print">
-            <h2 class="section-title">Target Bulanan (Adjustable)</h2>
-            <div class="targets-grid">
-                <div class="target-item">
-                    <label>Target Revenue (Rp) <span class="bobot-badge">Bobot 45%</span></label>
-                    <input type="number" id="targetRevenue" value="50000000" min="0" onchange="recalculateAll()">
-                </div>
-                <div class="target-item">
-                    <label>Target Kepuasan (rating) <span class="bobot-badge">Bobot 15%</span></label>
-                    <input type="number" id="targetKepuasan" value="4.5" min="0" max="5" step="0.1" onchange="recalculateAll()">
-                </div>
-                <div class="target-item">
-                    <label>Cap Kepuasan (rating)</label>
-                    <input type="number" id="capKepuasan" value="5" min="0" max="5" step="0.1" onchange="recalculateAll()">
-                </div>
-                <div class="target-item">
-                    <label>Target Complain Selesai (%) <span class="bobot-badge">Bobot 15%</span></label>
-                    <input type="number" id="targetComplain" value="100" min="0" max="100" onchange="recalculateAll()">
-                </div>
-                <div class="target-item">
-                    <label>Target Akurasi (max error) <span class="bobot-badge">Bobot 10%</span></label>
-                    <input type="number" id="targetAkurasi" value="2" min="0" onchange="recalculateAll()">
-                </div>
-                <div class="target-item">
-                    <label>Cap Akurasi (error)</label>
-                    <input type="number" id="capAkurasi" value="0" min="0" onchange="recalculateAll()">
-                </div>
-                <div class="target-item">
-                    <label>Target Fasilitas Bonus (%) <span class="bobot-badge">Bobot 5%</span></label>
-                    <input type="number" id="targetBonus" value="100" min="0" max="100" onchange="recalculateAll()">
-                </div>
-                <div class="target-item">
-                    <label>Target Pemahaman Tools (%) <span class="bobot-badge">Bobot 5%</span></label>
-                    <input type="number" id="targetTools" value="90" min="0" max="100" onchange="recalculateAll()">
-                </div>
-                <div class="target-item">
-                    <label>Cap Pemahaman Tools (%)</label>
-                    <input type="number" id="capTools" value="100" min="0" max="100" onchange="recalculateAll()">
-                </div>
-                <div class="target-item">
-                    <label>Target Kolaborasi (%) <span class="bobot-badge">Bobot 5%</span></label>
-                    <input type="number" id="targetKolaborasi" value="100" min="0" max="100" onchange="recalculateAll()">
-                </div>
-            </div>
-        </section>
-        <!-- Employee Cards Section -->
-        <section class="employees-section no-print">
-            <h2 class="section-title">Data Karyawan</h2>
-            <div class="add-staff-bar no-print">
-                <span class="hint">Ketik nama staff di tiap kartu. Tambah/hapus kartu sesuai tim aktif bulan ini.</span>
-                <button class="btn-add-staff" onclick="addEmployee()">+ Tambah Staff</button>
-            </div>
-            <div class="employees-grid" id="employeesGrid">
-                <!-- Cards generated by JS -->
-            </div>
-        </section>
-        <!-- PDF Preview Section -->
-        <section class="preview-section">
-            <h2 class="section-title no-print">Preview Report (Hasil Download)</h2>
-            <div class="preview-container">
-                <div class="pdf-content" id="pdfContent">
-                    <!-- PDF Header -->
-                    <div class="pdf-header">
-                        <div class="pdf-brand">
-                            <h2>Golden English Bekasi</h2>
-                            <p>KPI Report - After Sales Team</p>
-                        </div>
-                        <div class="pdf-period">
-                            <div class="period" id="pdfPeriod">Januari</div>
-                            <div class="year" id="pdfYear">2025</div>
-                        </div>
-                    </div>
-                    <!-- Stats Grid -->
-                    <div class="pdf-stats-grid">
-                        <div class="pdf-stat-card">
-                            <div class="pdf-stat-value" id="pdfAvgScore">0%</div>
-                            <div class="pdf-stat-label">Rata-rata Score</div>
-                        </div>
-                        <div class="pdf-stat-card">
-                            <div class="pdf-stat-value" id="pdfTotalRevenue">Rp 0</div>
-                            <div class="pdf-stat-label">Total Revenue</div>
-                        </div>
-                        <div class="pdf-stat-card">
-                            <div class="pdf-stat-value" id="pdfAvgRevenue">Rp 0</div>
-                            <div class="pdf-stat-label">Rata-rata Revenue</div>
-                        </div>
-                        <div class="pdf-stat-card">
-                            <div class="pdf-stat-value" id="pdfAvgSatisfaction">0</div>
-                            <div class="pdf-stat-label">Rata-rata Kepuasan</div>
-                        </div>
-                    </div>
-                    <!-- Chart -->
-                    <div class="pdf-chart-container">
-                        <h3 class="pdf-chart-title">Perbandingan Performa</h3>
-                        <canvas id="performanceChart" height="120"></canvas>
-                    </div>
-                    <!-- Ranking Table -->
-                    <div class="pdf-ranking-section">
-                        <h3 class="pdf-ranking-title">Ranking Karyawan</h3>
-                        <table class="pdf-ranking-table">
-                            <thead>
-                                <tr>
-                                    <th>Rank</th>
-                                    <th>Nama</th>
-                                    <th>Score</th>
-                                    <th>Revenue</th>
-                                    <th>Kepuasan</th>
-                                    <th>Grade</th>
-                                </tr>
-                            </thead>
-                            <tbody id="pdfRankingBody">
-                                <!-- Generated by JS -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- Insight -->
-                    <div class="pdf-insight-section">
-                        <div class="pdf-insight-header">
-                            <div class="pdf-insight-icon">💡</div>
-                            <div>
-                                <div class="pdf-insight-title">Insight & Rekomendasi</div>
-                                <div class="pdf-insight-author">by M Rafli Febriansyah</div>
-                            </div>
-                        </div>
-                        <div class="pdf-insight-content" id="pdfInsightContent">
-                            Masukkan data untuk melihat insight otomatis.
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Actions -->
-            <div class="actions no-print">
-                <button class="btn btn-primary" onclick="exportPDF()">
-                    <span>📄</span> Download Full Report PDF
-                </button>
-                <button class="btn btn-secondary" onclick="resetAllData()">
-                    <span>🔄</span> Reset Semua Data
-                </button>
-            </div>
-        </section>
-    </main>
-    <!-- Modal Preview Individual -->
-    <div id="previewModal" class="modal-overlay" onclick="closePreviewModal(event)">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h3>Preview KPI Individual</h3>
-                <button class="modal-close" onclick="closePreviewModal()">&times;</button>
-            </div>
-            <div class="modal-body" id="modalPreviewContent">
-                <!-- Content generated by JS -->
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closePreviewModal()">Tutup</button>
-                <button class="btn btn-primary" id="modalDownloadBtn">
-                    <span>📄</span> Download PDF
-                </button>
-            </div>
-        </div>
+<header class="header">
+  <div class="header-content">
+    <div class="logo-section">
+      <h1>Golden English</h1>
+      <p>Bekasi Area &bull; Sales Team KPI</p>
+      <p style="font-size:10px;color:var(--gold);margin-top:3px;">Insight by M Rafli Febriansyah</p>
     </div>
-    <!-- Footer -->
-    <footer class="footer no-print">
-        <p>© 2025 <span class="brand-name">Golden English Bekasi</span> - KPI Generator v2.0 | After Sales Team</p>
-    </footer>
-    <!-- Hidden container for individual PDF -->
-    <div id="individualPdfContainer" style="position: absolute; left: -9999px; top: 0;"></div>
-    <script>
-        // Employee Data
-        // Staff dinamis - nama diisi manual. Mulai 1 kartu kosong, gunakan "+ Tambah Staff".
-        let employees = [{ id: 1, name: '' }];
-        let nextId = 2;
-        function escapeHtml(x){return String(x).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-        function initialsOf(name){const p=(name||'').trim().split(/\s+/).filter(Boolean);if(!p.length)return '?';return (p[0][0]+(p[1]?p[1][0]:'')).toUpperCase();}
-        // KPI Config with weights
-        const kpiWeights = {
-            revenue: 45, // Financial
-            kepuasan: 15, // Customer
-            complain: 15, // Customer
-            akurasi: 10, // Internal Process
-            bonus: 5, // Internal Process
-            tools: 5, // Learning & Growth
-            kolaborasi: 5 // Learning & Growth
-        };
-        let performanceChart;
-        // ==== Card markup (dinamis, nama manual) ====
-        function cardMarkup(emp) {
-            return `
-                <div class="employee-card" id="card-${emp.id}">
-                    <div class="card-header">
-                        <div class="employee-info">
-                            <div class="employee-avatar" id="avatar-${emp.id}">${initialsOf(emp.name)}</div>
-                            <div style="flex:1;min-width:0;">
-                                <input type="text" class="employee-name-input" id="name-${emp.id}" value="${escapeHtml(emp.name)}" placeholder="Nama Staff..." oninput="updateName(${emp.id}, this.value)">
-                                <div class="employee-role">After Sales Staff</div>
-                            </div>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:10px;">
-                            <div class="score-badge">
-                                <div class="score-value" id="score-${emp.id}">0%</div>
-                                <div class="score-label">Total Score</div>
-                            </div>
-                            <button class="employee-delete" onclick="deleteEmployee(${emp.id})" title="Hapus staff">&#10005;</button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="metrics-grid">
-                            <div class="category-divider">Financial (45%)</div>
-                            <div class="metric-item">
-                                <div class="metric-label">Revenue Achieved (Rp) <span class="bobot">45%</span></div>
-                                <input type="number" class="metric-input" id="revenue-${emp.id}" placeholder="0" min="0" onchange="calculateScore(${emp.id})">
-                            </div>
-                            <div class="category-divider">Customer (30%)</div>
-                            <div class="metric-item">
-                                <div class="metric-label">Kepuasan Murid (1-5) <span class="bobot">15%</span></div>
-                                <input type="number" class="metric-input" id="kepuasan-${emp.id}" placeholder="Rating" min="1" max="5" step="0.1" onchange="calculateScore(${emp.id})">
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-label">Complain Terselesaikan (%) <span class="bobot">15%</span></div>
-                                <input type="number" class="metric-input" id="complain-${emp.id}" placeholder="Persentase" min="0" max="100" onchange="calculateScore(${emp.id})">
-                            </div>
-                            <div class="category-divider">Internal Process (15%)</div>
-                            <div class="metric-item">
-                                <div class="metric-label">Kesalahan Input Data <span class="bobot">10%</span></div>
-                                <input type="number" class="metric-input" id="akurasi-${emp.id}" placeholder="Jumlah error" min="0" onchange="calculateScore(${emp.id})">
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-label">Fasilitas Bonus Terpenuhi (%) <span class="bobot">5%</span></div>
-                                <input type="number" class="metric-input" id="bonus-${emp.id}" placeholder="Persentase" min="0" max="100" onchange="calculateScore(${emp.id})">
-                            </div>
-                            <div class="category-divider">Learning & Growth (10%)</div>
-                            <div class="metric-item">
-                                <div class="metric-label">Pemahaman Tools (%) <span class="bobot">5%</span></div>
-                                <input type="number" class="metric-input" id="tools-${emp.id}" placeholder="Skor tes" min="0" max="100" onchange="calculateScore(${emp.id})">
-                            </div>
-                            <div class="metric-item">
-                                <div class="metric-label">Kolaborasi Case Aktif (%) <span class="bobot">5%</span></div>
-                                <input type="number" class="metric-input" id="kolaborasi-${emp.id}" placeholder="Persentase" min="0" max="100" onchange="calculateScore(${emp.id})">
-                            </div>
-                        </div>
-                        <div class="feedback-section">
-                            <label class="feedback-label">Feedback & Catatan</label>
-                            <textarea class="feedback-textarea" id="feedback-${emp.id}" placeholder="Masukkan feedback..." onchange="updatePreview()"></textarea>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <button class="btn-preview-individual" onclick="showIndividualPreview(${emp.id})"><span>&#128065;</span> Preview</button>
-                        <button class="btn-download-individual" onclick="exportIndividualPDF(${emp.id})"><span>&#128196;</span> Download PDF</button>
-                    </div>
-                </div>
-            `;
-        }
-        function generateEmployeeCards() {
-            const grid = document.getElementById('employeesGrid');
-            grid.innerHTML = employees.map(cardMarkup).join('');
-            employees.forEach(emp => calculateScore(emp.id));
-        }
-        function addEmployee() {
-            const emp = { id: nextId++, name: '' };
-            employees.push(emp);
-            document.getElementById('employeesGrid').insertAdjacentHTML('beforeend', cardMarkup(emp));
-            calculateScore(emp.id);
-            const n = document.getElementById(`name-${emp.id}`);
-            if (n) n.focus();
-        }
-        function deleteEmployee(id) {
-            if (employees.length <= 1) { alert('Minimal harus ada 1 staff.'); return; }
-            if (!confirm('Hapus kartu staff ini beserta datanya?')) return;
-            employees = employees.filter(e => e.id !== id);
-            const c = document.getElementById(`card-${id}`);
-            if (c) c.remove();
-            updatePreview();
-        }
-        function updateName(id, val) {
-            const e = employees.find(x => x.id === id);
-            if (e) e.name = val;
-            const av = document.getElementById(`avatar-${id}`);
-            if (av) av.textContent = initialsOf(val);
-            updatePreview();
-        }
-        // Get targets from inputs
-        function getTargets() {
-            return {
-                revenue: { target: parseFloat(document.getElementById('targetRevenue').value) || 50000000 },
-                kepuasan: { target: parseFloat(document.getElementById('targetKepuasan').value) || 4.5, cap: parseFloat(document.getElementById('capKepuasan').value) || 5 },
-                complain: { target: parseInt(document.getElementById('targetComplain').value) || 100 },
-                akurasi: { target: parseInt(document.getElementById('targetAkurasi').value) || 2, cap: parseInt(document.getElementById('capAkurasi').value) || 0 },
-                bonus: { target: parseInt(document.getElementById('targetBonus').value) || 100 },
-                tools: { target: parseInt(document.getElementById('targetTools').value) || 90, cap: parseInt(document.getElementById('capTools').value) || 100 },
-                kolaborasi: { target: parseInt(document.getElementById('targetKolaborasi').value) || 100 }
-            };
-        }
-        // Calculate Score
-        function calculateScore(empId) {
-            const targets = getTargets();
-            let totalScore = 0;
-            // Revenue (30%) - higher is better, capped at 100%
-            const revenue = parseFloat(document.getElementById(`revenue-${empId}`).value) || 0;
-            const revenueScore = Math.min((revenue / targets.revenue.target) * 100, 100);
-            totalScore += (revenueScore * kpiWeights.revenue) / 100;
-            // Kepuasan (15%) - higher is better
-            const kepuasan = parseFloat(document.getElementById(`kepuasan-${empId}`).value) || 0;
-            let kepuasanScore = 0;
-            if (kepuasan >= targets.kepuasan.cap) {
-                kepuasanScore = 100;
-            } else if (kepuasan >= targets.kepuasan.target) {
-                kepuasanScore = 100;
-            } else {
-                kepuasanScore = (kepuasan / targets.kepuasan.target) * 100;
-            }
-            totalScore += (kepuasanScore * kpiWeights.kepuasan) / 100;
-            // Complain (15%) - higher percentage is better
-            const complain = parseInt(document.getElementById(`complain-${empId}`).value) || 0;
-            let complainScore = 0;
-            if (complain > 0) {
-                complainScore = (complain / targets.complain.target) * 100;
-                complainScore = Math.min(complainScore, 100);
-            }
-            totalScore += (complainScore * kpiWeights.complain) / 100;
-            // Akurasi (10%) - lower errors is better (inverse)
-            const akurasi = parseInt(document.getElementById(`akurasi-${empId}`).value);
-            let akurasiScore = 0;
-            if (akurasi !== '' && !isNaN(akurasi)) {
-                if (akurasi <= targets.akurasi.cap) {
-                    akurasiScore = 100;
-                } else if (akurasi === 1) {
-                    akurasiScore = 75;
-                } else if (akurasi <= targets.akurasi.target) {
-                    akurasiScore = 50;
-                } else {
-                    akurasiScore = 0;
-                }
-            }
-            totalScore += (akurasiScore * kpiWeights.akurasi) / 100;
-            // Bonus (5%)
-            const bonus = parseInt(document.getElementById(`bonus-${empId}`).value) || 0;
-            let bonusScore = (bonus / targets.bonus.target) * 100;
-            bonusScore = Math.min(bonusScore, 100);
-            totalScore += (bonusScore * kpiWeights.bonus) / 100;
-            // Tools (5%)
-            const tools = parseInt(document.getElementById(`tools-${empId}`).value) || 0;
-            let toolsScore = 0;
-            if (tools >= targets.tools.cap) {
-                toolsScore = 100;
-            } else if (tools >= targets.tools.target) {
-                toolsScore = 100;
-            } else {
-                toolsScore = (tools / targets.tools.target) * 100;
-            }
-            totalScore += (toolsScore * kpiWeights.tools) / 100;
-            // Kolaborasi (5%)
-            const kolaborasi = parseInt(document.getElementById(`kolaborasi-${empId}`).value) || 0;
-            let kolaborasiScore = (kolaborasi / targets.kolaborasi.target) * 100;
-            kolaborasiScore = Math.min(kolaborasiScore, 100);
-            totalScore += (kolaborasiScore * kpiWeights.kolaborasi) / 100;
-            document.getElementById(`score-${empId}`).textContent = Math.round(totalScore) + '%';
-            updatePreview();
-        }
-        // Recalculate all when targets change
-        function recalculateAll() {
-            employees.forEach(emp => calculateScore(emp.id));
-        }
-        // Update Preview
-        function updatePreview() {
-            const month = document.getElementById('month');
-            const year = document.getElementById('year').value;
-            const monthName = month.options[month.selectedIndex].text;
-            document.getElementById('pdfPeriod').textContent = monthName;
-            document.getElementById('pdfYear').textContent = year;
-            let totalScores = 0, totalRevenue = 0, totalSatisfaction = 0;
-            const employeeData = [];
-            employees.forEach(emp => {
-                const score = parseInt(document.getElementById(`score-${emp.id}`).textContent) || 0;
-                const revenue = parseFloat(document.getElementById(`revenue-${emp.id}`).value) || 0;
-                const satisfaction = parseFloat(document.getElementById(`kepuasan-${emp.id}`).value) || 0;
-                totalScores += score;
-                totalRevenue += revenue;
-                totalSatisfaction += satisfaction;
-                employeeData.push({ name: emp.name, id: emp.id, score, revenue, satisfaction });
-            });
-            const count = employees.length;
-            document.getElementById('pdfAvgScore').textContent = Math.round(totalScores / count) + '%';
-            document.getElementById('pdfTotalRevenue').textContent = 'Rp ' + totalRevenue.toLocaleString('id-ID');
-            document.getElementById('pdfAvgRevenue').textContent = 'Rp ' + Math.round(totalRevenue / count).toLocaleString('id-ID');
-            document.getElementById('pdfAvgSatisfaction').textContent = (totalSatisfaction / count).toFixed(1) + '/5';
-            updateChart(employeeData);
-            updateRanking(employeeData);
-            updateInsight(employeeData, Math.round(totalScores / count), totalRevenue, (totalSatisfaction / count).toFixed(1));
-        }
-        // Update Chart
-        function updateChart(data) {
-            const ctx = document.getElementById('performanceChart').getContext('2d');
-            if (performanceChart) performanceChart.destroy();
-            performanceChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: data.map(d => d.name.split(' ')[0]),
-                    datasets: [{
-                        label: 'Score (%)',
-                        data: data.map(d => d.score),
-                        backgroundColor: 'rgba(212, 175, 55, 0.8)',
-                        borderColor: '#D4AF37',
-                        borderWidth: 2,
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            grid: { color: 'rgba(255,255,255,0.1)' },
-                            ticks: { color: '#8A8A8A', callback: v => v + '%' }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: '#8A8A8A' }
-                        }
-                    },
-                    plugins: { legend: { display: false } }
-                }
-            });
-        }
-        // Update Ranking
-        function updateRanking(data) {
-            const sorted = [...data].sort((a, b) => b.score - a.score);
-            const tbody = document.getElementById('pdfRankingBody');
-            tbody.innerHTML = '';
-            sorted.forEach((emp, i) => {
-                const rank = i + 1;
-                const rankClass = rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : 'rank-other';
-               
-                let grade, gradeClass;
-                if (emp.score >= 90) { grade = 'A'; gradeClass = 'grade-a'; }
-                else if (emp.score >= 75) { grade = 'B'; gradeClass = 'grade-b'; }
-                else if (emp.score >= 60) { grade = 'C'; gradeClass = 'grade-c'; }
-                else { grade = 'D'; gradeClass = 'grade-d'; }
-                tbody.innerHTML += `
-                    <tr>
-                        <td><span class="rank-badge ${rankClass}">${rank}</span></td>
-                        <td>${emp.name}</td>
-                        <td><strong>${emp.score}%</strong></td>
-                        <td>${'Rp ' + (emp.revenue||0).toLocaleString('id-ID')}</td>
-                        <td>${emp.satisfaction}/5</td>
-                        <td><span class="grade-badge ${gradeClass}">${grade}</span></td>
-                    </tr>
-                `;
-            });
-        }
-        // Update Insight
-        function updateInsight(data, avgScore, totalRevenue, avgSatisfaction) {
-            const sorted = [...data].sort((a, b) => b.score - a.score);
-            const top = sorted[0];
-            let insight = '';
-            if (avgScore === 0) {
-                insight = 'Masukkan data untuk melihat insight otomatis berdasarkan performa tim After Sales.';
-            } else {
-                insight = `Tim After Sales mencatat rata-rata score <strong>${avgScore}%</strong> dengan total revenue <strong>Rp ${Number(totalRevenue).toLocaleString('id-ID')}</strong> dan kepuasan <strong>${avgSatisfaction}/5</strong>. `;
-               
-                if (top && top.score > 0) {
-                    insight += `<strong>${top.name}</strong> memimpin dengan score ${top.score}%. `;
-                }
-                if (avgScore >= 85) {
-                    insight += 'Performa tim sangat baik! Pertahankan kualitas layanan.';
-                } else if (avgScore >= 70) {
-                    insight += 'Performa cukup baik. Tingkatkan revenue dan kecepatan handling complain.';
-                } else if (avgScore >= 60) {
-                    insight += 'Ada ruang improvement. Evaluasi strategi retensi & follow-up revenue.';
-                } else {
-                    insight += 'Perlu perhatian khusus. Lakukan review proses after sales.';
-                }
-            }
-            document.getElementById('pdfInsightContent').innerHTML = insight;
-        }
-        // Export Full PDF (Recap Semua Report)
-        async function exportPDF() {
-            console.log('Starting full PDF export...');
-            try {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF({
-                    orientation: 'landscape',
-                    unit: 'mm',
-                    format: 'a4'
-                });
-                const element = document.getElementById('pdfContent');
-                console.log('Element found:', element);
-                element.style.width = '1122px'; // A4 landscape in px (297mm * 3.78 px/mm approx)
-                element.style.height = 'auto';
-                element.style.backgroundColor = '#0D0D0D';
+    <div class="period-selector">
+      <div><label>Bulan</label><br>
+        <select id="month">
+          <option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option>
+          <option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option>
+          <option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option>
+          <option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
+        </select>
+      </div>
+      <div><label>Tahun</label><br><input type="number" id="year" value="2026" min="2020" max="2030"></div>
+    </div>
+  </div>
+</header>
 
-                // Handle chart
-                const chartCanvas = document.getElementById('performanceChart');
-                const chartImage = chartCanvas.toDataURL('image/png', 1.0);
-                console.log('Chart image created');
-                const chartContainer = document.querySelector('.pdf-chart-container');
-                const tempImg = document.createElement('img');
-                tempImg.src = chartImage;
-                tempImg.style.width = '100%';
-                tempImg.style.height = 'auto';
-                chartContainer.replaceChild(tempImg, chartCanvas);
+<main class="container">
+  <section class="target-section">
+    <h2>Target Bulanan</h2>
+    <div class="target-grid">
+      <div class="target-item"><label>Target Revenue (Rp) <span class="bobot">50%</span></label><input type="number" id="targetRevenue" value="50000000"></div>
+      <div class="target-item"><label>Min. Rasio Closing (%) <span class="bobot">25%</span></label><input type="number" id="targetClosing" value="10"></div>
+      <div class="target-item"><label>Min. Jumlah Trial <span class="bobot">15%</span></label><input type="number" id="targetTrial" value="20"></div>
+      <div class="target-item"><label>Min. Typing Score <span class="bobot">10%</span></label><input type="number" id="targetTyping" value="90"></div>
+    </div>
+  </section>
 
-                // Render with html2canvas
-                const canvas = await html2canvas(element, {
-                    scale: 2,
-                    useCORS: true,
-                    backgroundColor: '#0D0D0D',
-                    windowWidth: element.scrollWidth,
-                    windowHeight: element.scrollHeight,
-                    logging: true,
-                    allowTaint: true,
-                    taintTest: false // Tambah ini untuk avoid black screen
-                });
-                console.log('Canvas created, size:', canvas.width, 'x', canvas.height);
+  <div class="import-bar">
+    <div class="imp-text"><b>Import dari KONTRAK (Excel/CSV)</b><span>Upload file KONTRAK_KPI_Sales yang sudah diisi - semua staff terhitung otomatis.</span></div>
+    <div class="import-actions">
+      <input type="file" id="importFile" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleImport(event)">
+      <button class="btn-import" onclick="document.getElementById('importFile').click()">&#128229; Import Excel/CSV</button>
+    </div>
+  </div>
 
-                const imgData = canvas.toDataURL('image/jpeg', 0.95);
-                const imgWidth = 297;
-                const pageHeight = 210;
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                let heightLeft = imgHeight;
-                let position = 0;
+  <div class="add-staff-bar">
+    <span class="hint">Atau isi manual: ketik nama staff di tiap kartu. Tambah/hapus sesuai tim aktif.</span>
+    <button class="btn-add-staff" onclick="addEmployee()">+ Tambah Staff</button>
+  </div>
 
-                doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
-                heightLeft -= pageHeight;
+  <div class="employee-grid" id="employeeGrid"></div>
 
-                while (heightLeft > 0) {
-                    position = heightLeft - imgHeight;
-                    doc.addPage();
-                    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
-                    heightLeft -= pageHeight;
-                }
+  <section class="summary-section" id="summarySection">
+    <div class="summary-header">
+      <h2>Summary Report</h2>
+      <p id="summaryPeriod">Periode: Januari 2026</p>
+      <p style="font-size:11px;color:var(--gold);margin-top:8px;">Insight by M Rafli Febriansyah</p>
+    </div>
+    <div class="summary-stats">
+      <div class="stat-card"><div class="stat-value" id="avgScore">0%</div><div class="stat-label">Rata-rata Score</div></div>
+      <div class="stat-card"><div class="stat-value" id="totalRevenue">Rp 0</div><div class="stat-label">Total Revenue</div></div>
+      <div class="stat-card"><div class="stat-value" id="totalTrial">0</div><div class="stat-label">Total Trial</div></div>
+      <div class="stat-card"><div class="stat-value" id="totalClosing">0</div><div class="stat-label">Total Closing</div></div>
+    </div>
+    <div class="chart-container"><canvas id="performanceChart"></canvas></div>
+    <table class="ranking-table">
+      <thead><tr><th>Rank</th><th>Nama</th><th>Final Score</th><th>Performance</th><th>Grade</th></tr></thead>
+      <tbody id="rankingBody"></tbody>
+    </table>
+    <div class="actions">
+      <button class="btn btn-secondary" id="btnDownloadAll" onclick="exportAllIndividualPDF()" disabled>&#128209; Download Semua (Per Orang)</button>
+      <button class="btn btn-primary" id="btnDownloadSummary" onclick="exportPDF()" disabled>&#128196; Download Summary</button>
+      <button class="btn btn-secondary" onclick="resetAll()">&#128260; Reset Data</button>
+    </div>
+  </section>
 
-                const month = document.getElementById('month');
-                const year = document.getElementById('year').value;
-                const monthName = month.options[month.selectedIndex].text;
-                doc.save(`KPI_AfterSales_Bekasi_${monthName}_${year}.pdf`);
-                console.log('PDF saved');
+  <div class="preview-modal" id="previewModal">
+    <button class="preview-close" onclick="closePreview()">&#10005;</button>
+    <div class="preview-container"><div class="preview-content" id="previewContent"></div></div>
+    <div class="preview-actions">
+      <button class="btn btn-secondary" onclick="closePreview()">&larr; Kembali Edit</button>
+      <button class="btn btn-primary" id="previewDownloadBtn">&#128196; Download PDF</button>
+    </div>
+  </div>
 
-                // Restore
-                chartContainer.replaceChild(chartCanvas, tempImg);
-                element.style.width = '';
-                element.style.height = '';
-            } catch (error) {
-                console.error('Error in exportPDF:', error);
-                alert('Terjadi error saat export PDF. Check console (F12) untuk detail.');
-            }
-        }
-        // Show Individual Preview Modal
-        function showIndividualPreview(empId) {
-            console.log('Showing preview for', empId);
-            const emp = employees.find(e => e.id === empId);
-            const month = document.getElementById('month');
-            const year = document.getElementById('year').value;
-            const monthName = month.options[month.selectedIndex].text;
-            const score = document.getElementById(`score-${empId}`).textContent;
-            const feedback = document.getElementById(`feedback-${empId}`).value || 'Tidak ada catatan.';
-            const targets = getTargets();
-            const vals = {
-                revenue: document.getElementById(`revenue-${empId}`).value || '-',
-                kepuasan: document.getElementById(`kepuasan-${empId}`).value || '-',
-                complain: document.getElementById(`complain-${empId}`).value || '-',
-                akurasi: document.getElementById(`akurasi-${empId}`).value || '-',
-                bonus: document.getElementById(`bonus-${empId}`).value || '-',
-                tools: document.getElementById(`tools-${empId}`).value || '-',
-                kolaborasi: document.getElementById(`kolaborasi-${empId}`).value || '-'
-            };
-            const scoreNum = parseInt(score);
-            let grade, gradeColor;
-            if (scoreNum >= 90) { grade = 'A'; gradeColor = '#4CAF50'; }
-            else if (scoreNum >= 75) { grade = 'B'; gradeColor = '#2196F3'; }
-            else if (scoreNum >= 60) { grade = 'C'; gradeColor = '#FF9800'; }
-            else { grade = 'D'; gradeColor = '#F44336'; }
-            const modalContent = document.getElementById('modalPreviewContent');
-            modalContent.innerHTML = `
-                <div class="individual-preview">
-                    <div class="individual-preview-header">
-                        <div>
-                            <h2 style="font-family: 'Playfair Display', serif; color: var(--gold-primary); margin: 0; font-size: 20px;">Golden English Bekasi</h2>
-                            <p style="color: var(--gray-light); margin: 5px 0 0 0; font-size: 11px;">KPI Report - After Sales</p>
-                        </div>
-                        <div style="text-align: right;">
-                            <div style="font-family: 'Playfair Display', serif; font-size: 18px;">${monthName}</div>
-                            <div style="color: var(--gray-light); font-size: 12px;">${year}</div>
-                        </div>
-                    </div>
-                    <div class="individual-preview-employee">
-                        <div class="individual-preview-avatar">${initialsOf(emp.name)}</div>
-                        <div>
-                            <div style="font-size: 15px; font-weight: 600;">${emp.name}</div>
-                            <div style="font-size: 10px; color: var(--gray-light); text-transform: uppercase; letter-spacing: 1px;">After Sales Staff</div>
-                        </div>
-                        <div class="individual-preview-score">
-                            <div class="value">${score}</div>
-                            <div class="label">Total Score</div>
-                        </div>
-                    </div>
-                    <table class="individual-preview-table">
-                        <thead>
-                            <tr>
-                                <th>Kategori</th>
-                                <th>KPI</th>
-                                <th>Nilai</th>
-                                <th>Target</th>
-                                <th>Bobot</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Financial</td><td>Revenue</td><td>${vals.revenue === '-' ? '-' : 'Rp ' + Number(vals.revenue).toLocaleString('id-ID')}</td><td>Rp ${Number(targets.revenue.target).toLocaleString('id-ID')}</td><td>45%</td></tr>
-                            <tr><td rowspan="2">Customer</td><td>Kepuasan Murid</td><td>${vals.kepuasan}/5</td><td>${targets.kepuasan.target}/5</td><td>15%</td></tr>
-                            <tr><td>Complain Terselesaikan</td><td>${vals.complain}%</td><td>${targets.complain.target}%</td><td>15%</td></tr>
-                            <tr><td rowspan="2">Internal Process</td><td>Kesalahan Data</td><td>${vals.akurasi}</td><td>Max ${targets.akurasi.target}</td><td>10%</td></tr>
-                            <tr><td>Fasilitas Bonus</td><td>${vals.bonus}%</td><td>${targets.bonus.target}%</td><td>5%</td></tr>
-                            <tr><td rowspan="2">Learning & Growth</td><td>Pemahaman Tools</td><td>${vals.tools}%</td><td>${targets.tools.target}%</td><td>5%</td></tr>
-                            <tr><td>Kolaborasi</td><td>${vals.kolaborasi}%</td><td>${targets.kolaborasi.target}%</td><td>5%</td></tr>
-                        </tbody>
-                    </table>
-                    <div class="individual-preview-feedback">
-                        <h4>Feedback & Catatan</h4>
-                        <p>${feedback}</p>
-                    </div>
-                    <div class="individual-preview-grade">
-                        <div class="grade-display">
-                            <div class="label">Grade</div>
-                            <div class="value" style="color: ${gradeColor};">${grade}</div>
-                        </div>
-                        <div class="individual-preview-insight">
-                            <h4>Insight</h4>
-                            <div class="author">by M Rafli Febriansyah</div>
-                            <p>${generateIndividualInsight(emp.name, scoreNum, vals, targets)}</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-            // Set download button action
-            document.getElementById('modalDownloadBtn').onclick = () => {
-                exportIndividualPDF(empId);
-                closePreviewModal();
-            };
-            // Show modal
-            document.getElementById('previewModal').classList.add('active');
-        }
-        // Close Preview Modal
-        function closePreviewModal(event) {
-            if (event && event.target !== event.currentTarget) return;
-            document.getElementById('previewModal').classList.remove('active');
-        }
-        // Export Individual PDF
-        async function exportIndividualPDF(empId) {
-            console.log('Starting individual PDF export for', empId);
-            try {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF({
-                    orientation: 'portrait',
-                    unit: 'pt',
-                    format: 'a4'
-                });
-                const emp = employees.find(e => e.id === empId);
-                const month = document.getElementById('month');
-                const year = document.getElementById('year').value;
-                const monthName = month.options[month.selectedIndex].text;
-                const score = document.getElementById(`score-${empId}`).textContent;
-                const feedback = document.getElementById(`feedback-${empId}`).value || 'Tidak ada catatan.';
-                const targets = getTargets();
-                const vals = {
-                    revenue: document.getElementById(`revenue-${empId}`).value || '-',
-                    kepuasan: document.getElementById(`kepuasan-${empId}`).value || '-',
-                    complain: document.getElementById(`complain-${empId}`).value || '-',
-                    akurasi: document.getElementById(`akurasi-${empId}`).value || '-',
-                    bonus: document.getElementById(`bonus-${empId}`).value || '-',
-                    tools: document.getElementById(`tools-${empId}`).value || '-',
-                    kolaborasi: document.getElementById(`kolaborasi-${empId}`).value || '-'
-                };
-                const scoreNum = parseInt(score);
-                let grade, gradeColor;
-                if (scoreNum >= 90) { grade = 'A'; gradeColor = '#4CAF50'; }
-                else if (scoreNum >= 75) { grade = 'B'; gradeColor = '#2196F3'; }
-                else if (scoreNum >= 60) { grade = 'C'; gradeColor = '#FF9800'; }
-                else { grade = 'D'; gradeColor = '#F44336'; }
+  <footer style="text-align:center;padding:30px 20px;border-top:1px solid var(--black-lighter);margin-top:40px;">
+    <p style="font-size:12px;color:var(--gold);font-weight:600;">Insight by M Rafli Febriansyah</p>
+    <p style="font-size:10px;color:var(--gray);margin-top:5px;">Golden English Bekasi Area &bull; KPI Management System</p>
+  </footer>
+</main>
 
-                // Create temporary element for rendering
-                const tempElement = document.createElement('div');
-                tempElement.style.width = '595pt'; // A4 portrait width
-                tempElement.style.height = 'auto';
-                tempElement.style.backgroundColor = '#0D0D0D';
-                tempElement.style.padding = '20pt';
-                tempElement.style.color = '#fff';
-                tempElement.style.fontFamily = "'Montserrat', sans-serif";
-                tempElement.style.lineHeight = '1.6';
-                tempElement.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2pt solid #D4AF37; padding-bottom: 15pt; margin-bottom: 15pt;">
-                        <div>
-                            <h2 style="font-family: 'Playfair Display', serif; color: #D4AF37; margin: 0; font-size: 18pt;">Golden English Bekasi</h2>
-                            <p style="color: #8A8A8A; margin: 4pt 0 0 0; font-size: 10pt;">KPI Report - After Sales</p>
-                        </div>
-                        <div style="text-align: right;">
-                            <div style="font-family: 'Playfair Display', serif; font-size: 16pt; color: #fff;">${monthName}</div>
-                            <div style="color: #8A8A8A; font-size: 12pt;">${year}</div>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 12pt; background: #1A1A1A; padding: 12pt 15pt; border-radius: 8pt; margin-bottom: 15pt;">
-                        <div style="width: 40pt; height: 40pt; background: linear-gradient(135deg, #D4AF37, #A68B28); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 16pt; font-weight: 700; color: #0D0D0D;">${initialsOf(emp.name)}</div>
-                        <div>
-                            <div style="font-size: 14pt; font-weight: 600; color: #fff;">${emp.name}</div>
-                            <div style="font-size: 9pt; color: #8A8A8A; text-transform: uppercase; letter-spacing: 1pt;">After Sales Staff</div>
-                        </div>
-                        <div style="margin-left: auto; text-align: center; background: #0D0D0D; border: 2pt solid #D4AF37; border-radius: 8pt; padding: 8pt 18pt;">
-                            <div style="font-family: 'Playfair Display', serif; font-size: 22pt; color: #D4AF37; font-weight: 700;">${score}</div>
-                            <div style="font-size: 8pt; color: #8A8A8A; text-transform: uppercase; letter-spacing: 1pt;">Total Score</div>
-                        </div>
-                    </div>
-                    <table style="width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 15pt;">
-                        <thead>
-                            <tr style="background: #1A1A1A; color: #D4AF37; border-bottom: 1pt solid #D4AF37;">
-                                <th style="padding: 8pt 6pt; text-align: left; font-size: 8pt;">Kategori</th>
-                                <th style="padding: 8pt 6pt; text-align: left; font-size: 8pt;">KPI</th>
-                                <th style="padding: 8pt 6pt; text-align: left; font-size: 8pt;">Nilai</th>
-                                <th style="padding: 8pt 6pt; text-align: left; font-size: 8pt;">Target</th>
-                                <th style="padding: 8pt 6pt; text-align: left; font-size: 8pt;">Bobot</th>
-                            </tr>
-                        </thead>
-                        <tbody style="color: #fff;">
-                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D; color: #D4AF37;">Financial</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Revenue</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.revenue === '-' ? '-' : 'Rp ' + Number(vals.revenue).toLocaleString('id-ID')}</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Rp ${Number(targets.revenue.target).toLocaleString('id-ID')}</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">45%</td></tr>
-                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D; color: #D4AF37;" rowspan="2">Customer</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Kepuasan Murid</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.kepuasan}/5</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${targets.kepuasan.target}/5</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">15%</td></tr>
-                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Complain Selesai</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.complain}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${targets.complain.target}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">15%</td></tr>
-                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D; color: #D4AF37;" rowspan="2">Internal</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Kesalahan Data</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.akurasi}</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Max ${targets.akurasi.target}</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">10%</td></tr>
-                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Fasilitas Bonus</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.bonus}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${targets.bonus.target}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">5%</td></tr>
-                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D; color: #D4AF37;" rowspan="2">Learning</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Pemahaman Tools</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.tools}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Min ${targets.tools.target}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">5%</td></tr>
-                            <tr><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">Kolaborasi</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${vals.kolaborasi}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">${targets.kolaborasi.target}%</td><td style="padding: 6pt; border-bottom: 1pt solid #2D2D2D;">5%</td></tr>
-                        </tbody>
-                    </table>
-                    <div style="display: flex; gap: 12pt; margin-bottom: 15pt;">
-                        <div style="flex: 1; background: #1A1A1A; padding: 12pt; border-radius: 6pt; border-left: 3pt solid #D4AF37;">
-                            <div style="font-size: 9pt; color: #D4AF37; text-transform: uppercase; margin-bottom: 6pt; font-weight: 600;">Feedback & Catatan</div>
-                            <div style="font-size: 10pt; color: #ccc; line-height: 1.5;">${feedback}</div>
-                        </div>
-                        <div style="width: 80pt; text-align: center; background: #1A1A1A; padding: 15pt 10pt; border-radius: 6pt;">
-                            <div style="font-size: 8pt; color: #8A8A8A; margin-bottom: 6pt; text-transform: uppercase;">Grade</div>
-                            <div style="font-size: 32pt; font-weight: bold; color: ${gradeColor};">${grade}</div>
-                        </div>
-                    </div>
-                    <div style="background: linear-gradient(135deg, #D4AF37, #A68B28); padding: 15pt; border-radius: 8pt; color: #0D0D0D;">
-                        <div style="font-size: 10pt; text-transform: uppercase; font-weight: bold; margin-bottom: 2pt;">Insight & Rekomendasi</div>
-                        <div style="font-size: 8pt; opacity: 0.7; margin-bottom: 8pt;">by M Rafli Febriansyah</div>
-                        <div style="font-size: 10pt; line-height: 1.6;">${generateIndividualInsight(emp.name, scoreNum, vals, targets)}</div>
-                    </div>
-                `;
+<script>
+let employees=[{id:1,name:''}]; let nextId=2;
+// Bobot final: Revenue 50 | Rasio Closing 25 | Trial 15 | Typing 10
+const weights={revenue:0.50,closing:0.25,trial:0.15,typing:0.10};
 
-                document.body.appendChild(tempElement); // Append to body for rendering
+function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function getEmp(id){return employees.find(e=>e.id===id);}
+function getName(id){const e=getEmp(id);return (e&&e.name.trim())?e.name.trim():'Staff';}
+function num(v){if(v===null||v===undefined||v==='')return 0;if(typeof v==='number')return v;const c=String(v).replace(/[^0-9.-]/g,'');const f=parseFloat(c);return isNaN(f)?0:f;}
 
-                const canvas = await html2canvas(tempElement, {
-                    scale: 2,
-                    useCORS: true,
-                    backgroundColor: '#0D0D0D',
-                    logging: true,
-                    allowTaint: true,
-                    taintTest: false
-                });
-                console.log('Individual canvas created');
-                const imgData = canvas.toDataURL('image/jpeg', 0.95);
-                const imgWidth = 595;
-                const pageHeight = 842;
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                let heightLeft = imgHeight;
-                let position = 0;
+document.addEventListener('DOMContentLoaded',function(){renderAllCards();initChart();updateSummary();setCurrentPeriod();
+  document.getElementById('month').addEventListener('change',updateSummary);
+  document.getElementById('year').addEventListener('change',updateSummary);
+  ['targetRevenue','targetClosing','targetTrial','targetTyping'].forEach(id=>document.getElementById(id).addEventListener('change',recalcAll));
+});
+function setCurrentPeriod(){const n=new Date();document.getElementById('month').value=n.getMonth()+1;document.getElementById('year').value=n.getFullYear();updatePeriodDisplay();}
+function recalcAll(){employees.forEach(e=>calculateScore(e.id));}
 
-                doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
-                heightLeft -= pageHeight;
+function cardMarkup(emp){return `
+  <div class="employee-card" id="card-${emp.id}">
+    <div class="employee-header">
+      <div class="employee-header-left">
+        <input type="text" class="employee-name-input" id="name-${emp.id}" value="${escapeHtml(emp.name)}" placeholder="Nama Staff..." oninput="updateName(${emp.id},this.value)">
+      </div>
+      <div class="employee-header-right">
+        <span class="employee-score" id="total-${emp.id}">0%</span>
+        <button class="employee-delete" onclick="deleteEmployee(${emp.id})" title="Hapus staff">&#10005;</button>
+      </div>
+    </div>
+    <div class="employee-body">
+      <div class="metric-group">
+        <div class="metric-group-title">Financial (75%)</div>
+        <div class="metric-row"><span class="metric-label">Revenue Closingan (Rp) <span class="w">50%</span></span>
+          <input type="number" class="metric-input" id="revenue-${emp.id}" placeholder="0" oninput="calculateScore(${emp.id})">
+          <span class="metric-score" id="revenueScore-${emp.id}">0%</span></div>
+        <div class="metric-row"><span class="metric-label">Total Leads Masuk</span>
+          <input type="number" class="metric-input" id="leads-${emp.id}" placeholder="0" oninput="calculateScore(${emp.id})"></div>
+        <div class="metric-row"><span class="metric-label">Jumlah Closing</span>
+          <input type="number" class="metric-input" id="closing-${emp.id}" placeholder="0" oninput="calculateScore(${emp.id})">
+          <span class="metric-score" id="closingScore-${emp.id}">0%</span></div>
+      </div>
+      <div class="metric-group">
+        <div class="metric-group-title">Customer (15%)</div>
+        <div class="metric-row"><span class="metric-label">Jumlah Trial <span class="w">15%</span></span>
+          <input type="number" class="metric-input" id="trial-${emp.id}" placeholder="0" oninput="calculateScore(${emp.id})">
+          <span class="metric-score" id="trialScore-${emp.id}">0%</span></div>
+      </div>
+      <div class="metric-group">
+        <div class="metric-group-title">Learning & Growth (10%)</div>
+        <div class="metric-row"><span class="metric-label">Typing Test Score <span class="w">10%</span></span>
+          <input type="number" class="metric-input" id="typing-${emp.id}" placeholder="0" max="100" oninput="calculateScore(${emp.id})">
+          <span class="metric-score" id="typingScore-${emp.id}">0%</span></div>
+      </div>
+      <div class="tracking-section">
+        <div class="tracking-row"><span class="tracking-label">Rasio Closing (Closing / Total Leads) &bull; 25%</span>
+          <span class="tracking-value" id="closingRatio-${emp.id}">0%</span></div>
+      </div>
+      <div class="feedback-section"><label class="feedback-label">Feedback (tidak dinilai)</label>
+        <textarea class="feedback-textarea" id="feedback-${emp.id}" placeholder="Catatan untuk staff ini..."></textarea></div>
+      <div class="individual-export">
+        <button class="btn-preview" onclick="previewIndividualPDF(${emp.id})">&#128065; Preview</button>
+        <button class="btn-individual" onclick="exportIndividualPDF(${emp.id})">&#128196; Download PDF</button>
+      </div>
+    </div>
+  </div>`;}
 
-                while (heightLeft > 0) {
-                    position = heightLeft - imgHeight;
-                    doc.addPage();
-                    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
-                    heightLeft -= pageHeight;
-                }
+function renderAllCards(){const g=document.getElementById('employeeGrid');g.innerHTML=employees.map(cardMarkup).join('');employees.forEach(e=>{setVals(e);calculateScore(e.id);});checkAllDataFilled();}
+function setVals(e){ // restore imported values into inputs
+  if(!e.data)return; const d=e.data;
+  const set=(f,v)=>{const el=document.getElementById(`${f}-${e.id}`); if(el&&v!==undefined&&v!=='')el.value=v;};
+  set('revenue',d.revenue);set('leads',d.leads);set('closing',d.closing);set('trial',d.trial);set('typing',d.typing);
+  const fb=document.getElementById(`feedback-${e.id}`); if(fb&&d.feedback)fb.value=d.feedback;
+}
+function addEmployee(){const e={id:nextId++,name:''};employees.push(e);document.getElementById('employeeGrid').insertAdjacentHTML('beforeend',cardMarkup(e));calculateScore(e.id);updateSummary();checkAllDataFilled();const n=document.getElementById(`name-${e.id}`);if(n)n.focus();}
+function deleteEmployee(id){if(employees.length<=1){alert('Minimal harus ada 1 staff.');return;}if(!confirm('Hapus kartu staff ini?'))return;employees=employees.filter(e=>e.id!==id);const c=document.getElementById(`card-${id}`);if(c)c.remove();updateSummary();checkAllDataFilled();}
+function updateName(id,v){const e=getEmp(id);if(e)e.name=v;updateSummary();checkAllDataFilled();}
 
-                doc.save(`KPI_${emp.name.replace(/\s/g, '_')}_${monthName}_${year}.pdf`);
-                console.log('Individual PDF saved');
+function calculateScore(id){
+  const tRev=num(document.getElementById('targetRevenue').value)||50000000;
+  const tClo=num(document.getElementById('targetClosing').value)||10;
+  const tTri=num(document.getElementById('targetTrial').value)||20;
+  const tTyp=num(document.getElementById('targetTyping').value)||90;
+  const revenue=num(document.getElementById(`revenue-${id}`).value);
+  const leads=num(document.getElementById(`leads-${id}`).value);
+  const closing=num(document.getElementById(`closing-${id}`).value);
+  const trial=num(document.getElementById(`trial-${id}`).value);
+  const typing=num(document.getElementById(`typing-${id}`).value);
+  const revenueScore=Math.min((revenue/tRev)*100,100);
+  const rasio=leads>0?(closing/leads)*100:0;
+  const closingScore=Math.min((rasio/tClo)*100,100);
+  const trialScore=Math.min((trial/tTri)*100,100);
+  const typingScore=Math.min((typing/tTyp)*100,100);
+  setScore(`revenueScore-${id}`,revenueScore);setScore(`closingScore-${id}`,closingScore);
+  setScore(`trialScore-${id}`,trialScore);setScore(`typingScore-${id}`,typingScore);
+  document.getElementById(`closingRatio-${id}`).textContent=rasio.toFixed(1)+'%';
+  const total=revenueScore*weights.revenue+closingScore*weights.closing+trialScore*weights.trial+typingScore*weights.typing;
+  const el=document.getElementById(`total-${id}`);el.textContent=total.toFixed(1)+'%';el.classList.add('calculating');setTimeout(()=>el.classList.remove('calculating'),400);
+  updateSummary();checkAllDataFilled();
+}
+function setScore(elId,score){const el=document.getElementById(elId);if(!el)return;el.textContent=score.toFixed(0)+'%';el.classList.remove('excellent','good','warning','poor');if(score>=90)el.classList.add('excellent');else if(score>=70)el.classList.add('good');else if(score>=50)el.classList.add('warning');else el.classList.add('poor');}
 
-                document.body.removeChild(tempElement); // Clean up
-            } catch (error) {
-                console.error('Error in exportIndividualPDF:', error);
-                alert('Terjadi error saat export PDF individual. Check console (F12) untuk detail.');
-            }
-        }
-        // Generate Individual Insight
-        function generateIndividualInsight(name, score, vals, targets) {
-            const firstName = name.split(' ')[0];
-            let insight = `${firstName} mencatat total score ${score}%. `;
-            if (score >= 90) insight += 'Performa sangat baik! ';
-            else if (score >= 75) insight += 'Performa cukup baik. ';
-            else if (score >= 60) insight += 'Ada ruang improvement. ';
-            else insight += 'Perlu pembinaan lebih lanjut. ';
-            const revenue = parseFloat(vals.revenue) || 0;
-            const kepuasan = parseFloat(vals.kepuasan) || 0;
-            if (revenue > 0 && revenue < targets.revenue.target) {
-                insight += `Revenue (Rp ${revenue.toLocaleString('id-ID')}) di bawah target Rp ${Number(targets.revenue.target).toLocaleString('id-ID')}. `;
-            }
-            if (kepuasan > 0 && kepuasan < targets.kepuasan.target) {
-                insight += `Kepuasan (${kepuasan}/5) perlu ditingkatkan. `;
-            }
-            return insight;
-        }
-        // Reset All
-        function resetAllData() {
-            if (!confirm('Yakin reset semua data?')) return;
-            employees.forEach(emp => {
-                ['revenue', 'kepuasan', 'complain', 'akurasi', 'bonus', 'tools', 'kolaborasi'].forEach(field => {
-                    const el = document.getElementById(`${field}-${emp.id}`);
-                    if (el) el.value = '';
-                });
-                document.getElementById(`feedback-${emp.id}`).value = '';
-                document.getElementById(`score-${emp.id}`).textContent = '0%';
-            });
-            updatePreview();
-        }
-        // Init
-        document.addEventListener('DOMContentLoaded', () => {
-            generateEmployeeCards();
-            updatePreview();
-            document.getElementById('month').addEventListener('change', updatePreview);
-            document.getElementById('year').addEventListener('change', updatePreview);
-        });
-    </script>
+function checkAllDataFilled(){let ok=employees.length>0;employees.forEach(e=>{const n=document.getElementById(`name-${e.id}`);const nm=n?n.value.trim():'';['revenue','leads','closing','trial','typing'].forEach(f=>{if(!document.getElementById(`${f}-${e.id}`).value)ok=false;});if(!nm)ok=false;});
+  document.getElementById('btnDownloadAll').disabled=!ok;document.getElementById('btnDownloadSummary').disabled=!ok;}
+
+function updateSummary(){updatePeriodDisplay();let ts=0,tr=0,tt=0,tc=0;const rk=[];
+  employees.forEach(e=>{const s=parseFloat((document.getElementById(`total-${e.id}`)||{}).textContent)||0;const rev=num((document.getElementById(`revenue-${e.id}`)||{}).value);const tri=num((document.getElementById(`trial-${e.id}`)||{}).value);const clo=num((document.getElementById(`closing-${e.id}`)||{}).value);ts+=s;tr+=rev;tt+=tri;tc+=clo;rk.push({name:getName(e.id),score:s});});
+  const c=employees.length||1;
+  document.getElementById('avgScore').textContent=(ts/c).toFixed(1)+'%';
+  document.getElementById('totalRevenue').textContent='Rp '+tr.toLocaleString('id-ID');
+  document.getElementById('totalTrial').textContent=tt;
+  document.getElementById('totalClosing').textContent=tc;
+  rk.sort((a,b)=>b.score-a.score);const tb=document.getElementById('rankingBody');tb.innerHTML='';
+  rk.forEach((e,i)=>{const rank=i+1;let rc='rank-other';if(rank===1)rc='rank-1';else if(rank===2)rc='rank-2';else if(rank===3)rc='rank-3';let g='D';if(e.score>=90)g='A';else if(e.score>=80)g='B';else if(e.score>=70)g='C';
+    tb.innerHTML+=`<tr><td><span class="rank-badge ${rc}">${rank}</span></td><td>${escapeHtml(e.name)}</td><td><strong>${e.score.toFixed(1)}%</strong></td><td><div class="score-bar"><div class="score-bar-fill" style="width:${Math.min(e.score,100)}%"></div></div></td><td><strong>${g}</strong></td></tr>`;});
+  updateChart(rk);}
+function updatePeriodDisplay(){const m=document.getElementById('month');const y=document.getElementById('year').value;document.getElementById('summaryPeriod').textContent=`Periode: ${m.options[m.selectedIndex].text} ${y}`;}
+
+let chart=null;
+function initChart(){const ctx=document.getElementById('performanceChart').getContext('2d');chart=new Chart(ctx,{type:'bar',data:{labels:[],datasets:[{label:'Final Score (%)',data:[],backgroundColor:'rgba(212,175,55,0.8)',borderColor:'#D4AF37',borderWidth:2,borderRadius:8}]},options:{responsive:true,maintainAspectRatio:true,aspectRatio:2.5,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:100,grid:{color:'rgba(255,255,255,0.1)'},ticks:{color:'#888',callback:v=>v+'%'}},x:{grid:{display:false},ticks:{color:'#888'}}}}});}
+function updateChart(rk){if(chart){chart.data.labels=rk.map(r=>r.name);chart.data.datasets[0].data=rk.map(r=>r.score);chart.update();}}
+
+function resetAll(){if(!confirm('Yakin reset semua data? (Nama staff tetap)'))return;employees.forEach(e=>{['revenue','leads','closing','trial','typing'].forEach(f=>{const el=document.getElementById(`${f}-${e.id}`);if(el)el.value='';});const fb=document.getElementById(`feedback-${e.id}`);if(fb)fb.value='';calculateScore(e.id);});}
+
+/* ===================== IMPORT EXCEL / CSV ===================== */
+function norm(s){return String(s||'').toLowerCase().replace(/[\s\n\r%()\/.,\-]/g,'');}
+function handleImport(ev){
+  const file=ev.target.files[0]; if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      let wb;
+      if(file.name.toLowerCase().endsWith('.csv')){ wb=XLSX.read(e.target.result,{type:'string'}); }
+      else { wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'}); }
+      const ws=wb.Sheets[wb.SheetNames[0]];
+      const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+      // parse targets (best effort)
+      rows.forEach(r=>{const a=norm(r[0]);const v=num(r[1]);if(!v)return;
+        if(a.includes('targetrevenue'))document.getElementById('targetRevenue').value=v;
+        else if(a.includes('rasioclosing'))document.getElementById('targetClosing').value=v;
+        else if(a.includes('jumlahtrial')||(a.includes('trial')&&a.includes('min')))document.getElementById('targetTrial').value=v;
+        else if(a.includes('typingscore')||a.includes('typing'))document.getElementById('targetTyping').value=v;});
+      // find header row
+      let hIdx=-1;for(let i=0;i<rows.length;i++){if(rows[i].some(c=>norm(c).startsWith('namastaff'))){hIdx=i;break;}}
+      if(hIdx<0){alert('Format tidak dikenali: kolom "Nama Staff" tidak ditemukan. Pastikan pakai template KONTRAK_KPI_Sales.');return;}
+      const H=rows[hIdx].map(norm);
+      const find=(fn)=>H.findIndex(fn);
+      const col={
+        name:find(h=>h.startsWith('namastaff')||h==='nama'),
+        leads:find(h=>h.includes('totalleads')||h.includes('leadsmasuk')),
+        trial:find(h=>h.includes('jumlahtrial')||(h.includes('trial')&&!h.includes('rasio'))),
+        closing:find(h=>h.includes('jumlahclosing')||(h.includes('closing')&&!h.includes('rasio'))),
+        revenue:find(h=>h.includes('revenue')),
+        typing:find(h=>h.includes('typing')),
+        catatan:find(h=>h.includes('catatan'))
+      };
+      const newEmps=[]; let id=1;
+      for(let i=hIdx+1;i<rows.length;i++){
+        const r=rows[i]; const nm=col.name>=0?String(r[col.name]||'').trim():'';
+        if(!nm)continue;
+        newEmps.push({id:id++,name:nm,data:{
+          leads:col.leads>=0?num(r[col.leads]):'',
+          trial:col.trial>=0?num(r[col.trial]):'',
+          closing:col.closing>=0?num(r[col.closing]):'',
+          revenue:col.revenue>=0?num(r[col.revenue]):'',
+          typing:col.typing>=0?num(r[col.typing]):'',
+          feedback:col.catatan>=0?String(r[col.catatan]||''):''
+        }});
+      }
+      if(!newEmps.length){alert('Tidak ada baris staff terbaca. Cek isi template.');return;}
+      employees=newEmps; nextId=id;
+      renderAllCards(); recalcAll(); updateSummary();
+      alert('Berhasil import '+newEmps.length+' staff. Silakan cek & tambahkan feedback bila perlu.');
+    }catch(err){console.error(err);alert('Gagal membaca file: '+err.message);}
+    finally{ev.target.value='';}
+  };
+  if(file.name.toLowerCase().endsWith('.csv'))reader.readAsText(file); else reader.readAsArrayBuffer(file);
+}
+
+/* ===================== PDF ===================== */
+let currentPreviewEmpId=null;
+function generatePDFContent(id){
+  const name=getName(id);const m=document.getElementById('month');const y=document.getElementById('year').value;const mn=m.options[m.selectedIndex].text;
+  const tRev=num(document.getElementById('targetRevenue').value);
+  const revenue=num(document.getElementById(`revenue-${id}`).value);
+  const leads=num(document.getElementById(`leads-${id}`).value);
+  const closing=num(document.getElementById(`closing-${id}`).value);
+  const trial=num(document.getElementById(`trial-${id}`).value);
+  const typing=num(document.getElementById(`typing-${id}`).value);
+  const feedback=document.getElementById(`feedback-${id}`).value||'-';
+  const total=document.getElementById(`total-${id}`).textContent;
+  const rvS=document.getElementById(`revenueScore-${id}`).textContent;
+  const clS=document.getElementById(`closingScore-${id}`).textContent;
+  const trS=document.getElementById(`trialScore-${id}`).textContent;
+  const tyS=document.getElementById(`typingScore-${id}`).textContent;
+  const rasio=document.getElementById(`closingRatio-${id}`).textContent;
+  const sc=parseFloat(total);let grade='D',gc='#F44336';if(sc>=90){grade='A';gc='#4CAF50';}else if(sc>=80){grade='B';gc='#D4AF37';}else if(sc>=70){grade='C';gc='#FF9800';}
+  return `<div id="pdfPage" style="width:794px;height:1123px;background:#0D0D0D;color:#FAFAFA;font-family:Arial,sans-serif;padding:34px 40px;box-sizing:border-box;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:34px;color:rgba(212,175,55,0.04);font-weight:700;white-space:nowrap;">Insight by M Rafli Febriansyah</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #D4AF37;padding-bottom:12px;margin-bottom:18px;">
+      <div><div style="font-size:26px;color:#D4AF37;font-weight:bold;">Golden English</div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:2px;">Bekasi Area &bull; Sales Team</div></div>
+      <div style="text-align:right;"><div style="font-size:11px;color:#888;text-transform:uppercase;">KPI Report</div><div style="font-size:18px;color:#D4AF37;font-weight:600;">${mn} ${y}</div></div>
+    </div>
+    <div style="background:linear-gradient(90deg,#B8960C,#D4AF37);padding:15px 20px;border-radius:8px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;">
+      <div><div style="font-size:10px;color:#0D0D0D;text-transform:uppercase;">Nama Karyawan</div><div style="font-size:22px;color:#0D0D0D;font-weight:bold;">${escapeHtml(name)}</div></div>
+      <div style="background:#0D0D0D;padding:12px 24px;border-radius:8px;text-align:center;"><div style="font-size:9px;color:#888;text-transform:uppercase;">Final Score</div><div style="font-size:32px;color:#D4AF37;font-weight:700;">${total}</div><div style="font-size:18px;color:${gc};font-weight:700;">Grade ${grade}</div></div>
+    </div>
+    <div style="display:flex;gap:12px;margin-bottom:12px;">
+      <div style="flex:1;background:#1A1A1A;border:1px solid #2D2D2D;border-radius:8px;padding:16px;">
+        <div style="font-size:10px;color:#D4AF37;text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #2D2D2D;">Financial (75%)</div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:#888;">Revenue Closingan (50%)</span><span style="color:#D4AF37;font-weight:600;">${rvS}</span></div>
+        <div style="font-size:15px;color:#FFF;font-weight:600;">Rp ${revenue.toLocaleString('id-ID')}</div>
+        <div style="font-size:10px;color:#888;margin-bottom:12px;">Target: Rp ${tRev.toLocaleString('id-ID')}</div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:#888;">Rasio Closing (25%)</span><span style="color:#D4AF37;font-weight:600;">${clS}</span></div>
+        <div style="font-size:15px;color:#FFF;font-weight:600;">${closing} / ${leads} leads (${rasio})</div>
+      </div>
+      <div style="flex:1;background:#1A1A1A;border:1px solid #2D2D2D;border-radius:8px;padding:16px;">
+        <div style="font-size:10px;color:#D4AF37;text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #2D2D2D;">Customer (15%)</div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:#888;">Jumlah Trial</span><span style="color:#D4AF37;font-weight:600;">${trS}</span></div>
+        <div style="font-size:15px;color:#FFF;font-weight:600;margin-bottom:14px;">${trial} orang</div>
+        <div style="font-size:10px;color:#D4AF37;text-transform:uppercase;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #2D2D2D;">Learning & Growth (10%)</div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:#888;">Typing Test</span><span style="color:#D4AF37;font-weight:600;">${tyS}</span></div>
+        <div style="font-size:15px;color:#FFF;font-weight:600;">${typing}</div>
+      </div>
+    </div>
+    <div style="background:#1A1A1A;border:1px solid #D4AF37;border-radius:8px;padding:16px;">
+      <div style="font-size:10px;color:#D4AF37;text-transform:uppercase;margin-bottom:10px;">Feedback</div>
+      <div style="font-size:12px;color:#FAFAFA;line-height:1.6;">${escapeHtml(feedback)}</div>
+    </div>
+  </div>`;
+}
+function previewIndividualPDF(id){currentPreviewEmpId=id;document.getElementById('previewContent').innerHTML=generatePDFContent(id);document.getElementById('previewModal').classList.add('show');document.body.style.overflow='hidden';document.getElementById('previewDownloadBtn').onclick=()=>exportIndividualPDF(currentPreviewEmpId);}
+function closePreview(){document.getElementById('previewModal').classList.remove('show');document.body.style.overflow='auto';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closePreview();});
+async function exportIndividualPDF(id){const name=getName(id);const m=document.getElementById('month');const y=document.getElementById('year').value;const mn=m.options[m.selectedIndex].text;
+  const c=document.createElement('div');c.innerHTML=generatePDFContent(id);c.style.cssText='position:absolute;left:-9999px;top:0;width:794px;';document.body.appendChild(c);
+  const el=c.querySelector('#pdfPage');
+  const opt={margin:[0,0,0,0],filename:`KPI_${name.replace(/\s+/g,'_')}_${mn}_${y}.pdf`,image:{type:'jpeg',quality:0.98},html2canvas:{scale:2,useCORS:true,scrollY:0},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['avoid-all','css','legacy']}};
+  try{await html2pdf().set(opt).from(el).save();}catch(e){console.error(e);}finally{document.body.removeChild(c);closePreview();}}
+async function exportAllIndividualPDF(){const m=document.getElementById('month');const y=document.getElementById('year').value;const mn=m.options[m.selectedIndex].text;
+  const ld=document.createElement('div');ld.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.9);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;';ld.innerHTML=`<div style="color:#D4AF37;font-size:24px;margin-bottom:20px;">Generating PDFs...</div><div id="progressText" style="color:#fff;">0 / ${employees.length}</div>`;document.body.appendChild(ld);
+  for(let i=0;i<employees.length;i++){const e=employees[i];document.getElementById('progressText').textContent=`${i+1} / ${employees.length} - ${getName(e.id)}`;
+    const c=document.createElement('div');c.innerHTML=generatePDFContent(e.id);c.style.cssText='position:fixed;left:0;top:0;z-index:-9999;';document.body.appendChild(c);const el=c.querySelector('#pdfPage');
+    const opt={margin:0,filename:`KPI_${getName(e.id).replace(/\s+/g,'_')}_${mn}_${y}.pdf`,image:{type:'jpeg',quality:1},html2canvas:{scale:2,useCORS:true,width:794,height:1123,windowWidth:794,windowHeight:1123},jsPDF:{unit:'px',format:[794,1123],orientation:'portrait',hotfixes:['px_scaling']}};
+    await html2pdf().set(opt).from(el).save();document.body.removeChild(c);await new Promise(r=>setTimeout(r,400));}
+  document.body.removeChild(ld);alert('Semua PDF berhasil di-download!');}
+async function exportPDF(){const s=document.querySelector('.summary-section');const a=document.querySelector('.actions');a.style.display='none';
+  const m=document.getElementById('month');const y=document.getElementById('year').value;const mn=m.options[m.selectedIndex].text;
+  const opt={margin:10,filename:`KPI_Summary_Sales_Bekasi_${mn}_${y}.pdf`,image:{type:'jpeg',quality:1},html2canvas:{scale:2,backgroundColor:'#0D0D0D',useCORS:true},jsPDF:{unit:'mm',format:'a4',orientation:'landscape'}};
+  await html2pdf().set(opt).from(s).save();a.style.display='flex';}
+</script>
 </body>
 </html>
