@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KPI Generator - Golden English Bekasi Area (Sales Team)</title>
+<title>KPI Generator - After Sales Golden English Bekasi</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
@@ -16,6 +16,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--black);color:var(--whi
 .header-content{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;}
 .logo-section h1{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gold);letter-spacing:1px;}
 .logo-section p{font-size:12px;color:var(--gray);text-transform:uppercase;letter-spacing:3px;margin-top:5px;}
+.badge-team{display:inline-block;margin-top:6px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--black);padding:4px 14px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
 .period-selector{display:flex;gap:15px;align-items:center;}
 .period-selector label{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--gold-light);}
 .period-selector select,.period-selector input{background:var(--black-lighter);border:1px solid var(--gold-dark);color:var(--white);padding:12px 20px;border-radius:4px;font-family:'Montserrat',sans-serif;font-size:14px;cursor:pointer;}
@@ -33,7 +34,6 @@ body{font-family:'Montserrat',sans-serif;background:var(--black);color:var(--whi
 .import-bar .imp-text{font-size:13px;color:var(--gold-light);}
 .import-bar .imp-text b{color:var(--gold);}
 .import-bar .imp-text span{display:block;font-size:11px;color:var(--gray);margin-top:2px;}
-.import-actions{display:flex;gap:10px;flex-wrap:wrap;}
 .btn-import{background:linear-gradient(90deg,var(--gold-dark),var(--gold));color:var(--black);border:none;padding:13px 26px;border-radius:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:12px;cursor:pointer;white-space:nowrap;}
 .btn-import:hover{box-shadow:0 5px 20px rgba(212,175,55,.3);transform:translateY(-2px);}
 .add-staff-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;gap:15px;}
@@ -64,7 +64,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--black);color:var(--whi
 .metric-input:focus{outline:none;border-color:var(--gold);}
 .metric-score{width:60px;text-align:right;font-size:12px;font-weight:600;}
 .metric-score.excellent{color:var(--success);}.metric-score.good{color:var(--gold);}.metric-score.warning{color:var(--warning);}.metric-score.poor{color:var(--danger);}
-.tracking-section{background:var(--black-lighter);border-radius:8px;padding:15px;margin-top:15px;}
+.tracking-section{background:var(--black-lighter);border-radius:8px;padding:12px 15px;margin-top:12px;}
 .tracking-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;}
 .tracking-label{font-size:11px;color:var(--gray);}
 .tracking-value{font-size:14px;font-weight:700;color:var(--gold-light);}
@@ -120,8 +120,9 @@ body{font-family:'Montserrat',sans-serif;background:var(--black);color:var(--whi
   <div class="header-content">
     <div class="logo-section">
       <h1>Golden English</h1>
-      <p>Bekasi Area &bull; Sales Team KPI</p>
-      <p style="font-size:10px;color:var(--gold);margin-top:3px;">Insight by M Rafli Febriansyah</p>
+      <p>Bekasi Area &bull; After Sales KPI</p>
+      <span class="badge-team">After Sales</span>
+      <p style="font-size:10px;color:var(--gold);margin-top:6px;">Insight by M Rafli Febriansyah</p>
     </div>
     <div class="period-selector">
       <div><label>Bulan</label><br>
@@ -141,16 +142,17 @@ body{font-family:'Montserrat',sans-serif;background:var(--black);color:var(--whi
   <section class="target-section">
     <h2>Target Bulanan</h2>
     <div class="target-grid">
-      <div class="target-item"><label>Target Revenue (Rp) <span class="bobot">50%</span></label><input type="number" id="targetRevenue" value="50000000"></div>
-      <div class="target-item"><label>Min. Rasio Closing (%) <span class="bobot">25%</span></label><input type="number" id="targetClosing" value="10"></div>
-      <div class="target-item"><label>Min. Jumlah Trial <span class="bobot">15%</span></label><input type="number" id="targetTrial" value="20"></div>
-      <div class="target-item"><label>Min. Typing Score <span class="bobot">10%</span></label><input type="number" id="targetTyping" value="90"></div>
+      <div class="target-item"><label>Target Revenue Renewal (Rp) <span class="bobot">30%</span></label><input type="number" id="targetRevenue" value="50000000"></div>
+      <div class="target-item"><label>Target Retensi (%) <span class="bobot">30%</span></label><input type="number" id="targetRetensi" value="65"></div>
+      <div class="target-item"><label>Target Complain Selesai (%) <span class="bobot">20%</span></label><input type="number" id="targetComplain" value="100"></div>
+      <div class="target-item"><label>Target Prospek Ditindaklanjuti <span class="bobot">10%</span></label><input type="number" id="targetProspek" value="15"></div>
+      <div class="target-item"><label>Target Jumlah Testimoni <span class="bobot">10%</span></label><input type="number" id="targetTestimoni" value="5"></div>
     </div>
   </section>
 
   <div class="import-bar">
-    <div class="imp-text"><b>Import dari KONTRAK (Excel/CSV)</b><span>Upload file KONTRAK_KPI_Sales yang sudah diisi - semua staff terhitung otomatis.</span></div>
-    <div class="import-actions">
+    <div class="imp-text"><b>Import dari KONTRAK (Excel/CSV)</b><span>Upload file KONTRAK_KPI_AfterSales yang sudah diisi - semua staff terhitung otomatis.</span></div>
+    <div>
       <input type="file" id="importFile" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleImport(event)">
       <button class="btn-import" onclick="document.getElementById('importFile').click()">&#128229; Import Excel/CSV</button>
     </div>
@@ -171,9 +173,9 @@ body{font-family:'Montserrat',sans-serif;background:var(--black);color:var(--whi
     </div>
     <div class="summary-stats">
       <div class="stat-card"><div class="stat-value" id="avgScore">0%</div><div class="stat-label">Rata-rata Score</div></div>
-      <div class="stat-card"><div class="stat-value" id="totalRevenue">Rp 0</div><div class="stat-label">Total Revenue</div></div>
-      <div class="stat-card"><div class="stat-value" id="totalTrial">0</div><div class="stat-label">Total Trial</div></div>
-      <div class="stat-card"><div class="stat-value" id="totalClosing">0</div><div class="stat-label">Total Closing</div></div>
+      <div class="stat-card"><div class="stat-value" id="totalRevenue">Rp 0</div><div class="stat-label">Total Revenue Renewal</div></div>
+      <div class="stat-card"><div class="stat-value" id="avgRetensi">0%</div><div class="stat-label">Rata-rata Retensi</div></div>
+      <div class="stat-card"><div class="stat-value" id="totalTestimoni">0</div><div class="stat-label">Total Testimoni</div></div>
     </div>
     <div class="chart-container"><canvas id="performanceChart"></canvas></div>
     <table class="ranking-table">
@@ -198,14 +200,14 @@ body{font-family:'Montserrat',sans-serif;background:var(--black);color:var(--whi
 
   <footer style="text-align:center;padding:30px 20px;border-top:1px solid var(--black-lighter);margin-top:40px;">
     <p style="font-size:12px;color:var(--gold);font-weight:600;">Insight by M Rafli Febriansyah</p>
-    <p style="font-size:10px;color:var(--gray);margin-top:5px;">Golden English Bekasi Area &bull; KPI Management System</p>
+    <p style="font-size:10px;color:var(--gray);margin-top:5px;">Golden English Bekasi Area &bull; KPI Management System - After Sales</p>
   </footer>
 </main>
 
 <script>
 let employees=[{id:1,name:''}]; let nextId=2;
-// Bobot final: Revenue 50 | Rasio Closing 25 | Trial 15 | Typing 10
-const weights={revenue:0.50,closing:0.25,trial:0.15,typing:0.10};
+// Bobot final: Retensi 30 | Revenue Renewal 30 | Complain Selesai 20 | Prospek 10 | Testimoni 10
+const weights={retensi:0.30,revenue:0.30,complain:0.20,prospek:0.10,testimoni:0.10};
 
 function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function getEmp(id){return employees.find(e=>e.id===id);}
@@ -215,7 +217,7 @@ function num(v){if(v===null||v===undefined||v==='')return 0;if(typeof v==='numbe
 document.addEventListener('DOMContentLoaded',function(){renderAllCards();initChart();updateSummary();setCurrentPeriod();
   document.getElementById('month').addEventListener('change',updateSummary);
   document.getElementById('year').addEventListener('change',updateSummary);
-  ['targetRevenue','targetClosing','targetTrial','targetTyping'].forEach(id=>document.getElementById(id).addEventListener('change',recalcAll));
+  ['targetRevenue','targetRetensi','targetComplain','targetProspek','targetTestimoni'].forEach(id=>document.getElementById(id).addEventListener('change',recalcAll));
 });
 function setCurrentPeriod(){const n=new Date();document.getElementById('month').value=n.getMonth()+1;document.getElementById('year').value=n.getFullYear();updatePeriodDisplay();}
 function recalcAll(){employees.forEach(e=>calculateScore(e.id));}
@@ -233,31 +235,32 @@ function cardMarkup(emp){return `
     </div>
     <div class="employee-body">
       <div class="metric-group">
-        <div class="metric-group-title">Financial (75%)</div>
-        <div class="metric-row"><span class="metric-label">Revenue Closingan (Rp) <span class="w">50%</span></span>
+        <div class="metric-group-title">Retensi & Revenue (70%)</div>
+        <div class="metric-row"><span class="metric-label">Revenue Renewal (Rp) <span class="w">30%</span></span>
           <input type="number" class="metric-input" id="revenue-${emp.id}" placeholder="0" oninput="calculateScore(${emp.id})">
           <span class="metric-score" id="revenueScore-${emp.id}">0%</span></div>
-        <div class="metric-row"><span class="metric-label">Total Leads Masuk</span>
-          <input type="number" class="metric-input" id="leads-${emp.id}" placeholder="0" oninput="calculateScore(${emp.id})"></div>
-        <div class="metric-row"><span class="metric-label">Jumlah Closing</span>
-          <input type="number" class="metric-input" id="closing-${emp.id}" placeholder="0" oninput="calculateScore(${emp.id})">
-          <span class="metric-score" id="closingScore-${emp.id}">0%</span></div>
+        <div class="metric-row"><span class="metric-label">Prospek Ditindaklanjuti <span class="w">10%</span></span>
+          <input type="number" class="metric-input" id="prospek-${emp.id}" placeholder="0" oninput="calculateScore(${emp.id})">
+          <span class="metric-score" id="prospekScore-${emp.id}">0%</span></div>
+        <div class="metric-row"><span class="metric-label">Closing Renewal</span>
+          <input type="number" class="metric-input" id="renewal-${emp.id}" placeholder="0" oninput="calculateScore(${emp.id})"></div>
+        <div class="tracking-section"><div class="tracking-row"><span class="tracking-label">Retensi (Renewal / Prospek) &bull; 30%</span>
+          <span class="tracking-value" id="retensiVal-${emp.id}">0%</span></div></div>
       </div>
       <div class="metric-group">
-        <div class="metric-group-title">Customer (15%)</div>
-        <div class="metric-row"><span class="metric-label">Jumlah Trial <span class="w">15%</span></span>
-          <input type="number" class="metric-input" id="trial-${emp.id}" placeholder="0" oninput="calculateScore(${emp.id})">
-          <span class="metric-score" id="trialScore-${emp.id}">0%</span></div>
+        <div class="metric-group-title">Service (20%)</div>
+        <div class="metric-row"><span class="metric-label">Komplain Masuk</span>
+          <input type="number" class="metric-input" id="kmasuk-${emp.id}" placeholder="0" oninput="calculateScore(${emp.id})"></div>
+        <div class="metric-row"><span class="metric-label">Komplain Selesai</span>
+          <input type="number" class="metric-input" id="kselesai-${emp.id}" placeholder="0" oninput="calculateScore(${emp.id})"></div>
+        <div class="tracking-section"><div class="tracking-row"><span class="tracking-label">Complain Selesai % &bull; 20%</span>
+          <span class="tracking-value" id="complainVal-${emp.id}">100%</span></div></div>
       </div>
       <div class="metric-group">
-        <div class="metric-group-title">Learning & Growth (10%)</div>
-        <div class="metric-row"><span class="metric-label">Typing Test Score <span class="w">10%</span></span>
-          <input type="number" class="metric-input" id="typing-${emp.id}" placeholder="0" max="100" oninput="calculateScore(${emp.id})">
-          <span class="metric-score" id="typingScore-${emp.id}">0%</span></div>
-      </div>
-      <div class="tracking-section">
-        <div class="tracking-row"><span class="tracking-label">Rasio Closing (Closing / Total Leads) &bull; 25%</span>
-          <span class="tracking-value" id="closingRatio-${emp.id}">0%</span></div>
+        <div class="metric-group-title">Growth (10%)</div>
+        <div class="metric-row"><span class="metric-label">Jumlah Testimoni <span class="w">10%</span></span>
+          <input type="number" class="metric-input" id="testimoni-${emp.id}" placeholder="0" oninput="calculateScore(${emp.id})">
+          <span class="metric-score" id="testimoniScore-${emp.id}">0%</span></div>
       </div>
       <div class="feedback-section"><label class="feedback-label">Feedback (tidak dinilai)</label>
         <textarea class="feedback-textarea" id="feedback-${emp.id}" placeholder="Catatan untuk staff ini..."></textarea></div>
@@ -269,50 +272,51 @@ function cardMarkup(emp){return `
   </div>`;}
 
 function renderAllCards(){const g=document.getElementById('employeeGrid');g.innerHTML=employees.map(cardMarkup).join('');employees.forEach(e=>{setVals(e);calculateScore(e.id);});checkAllDataFilled();}
-function setVals(e){ // restore imported values into inputs
-  if(!e.data)return; const d=e.data;
-  const set=(f,v)=>{const el=document.getElementById(`${f}-${e.id}`); if(el&&v!==undefined&&v!=='')el.value=v;};
-  set('revenue',d.revenue);set('leads',d.leads);set('closing',d.closing);set('trial',d.trial);set('typing',d.typing);
-  const fb=document.getElementById(`feedback-${e.id}`); if(fb&&d.feedback)fb.value=d.feedback;
-}
+function setVals(e){if(!e.data)return;const d=e.data;const set=(f,v)=>{const el=document.getElementById(`${f}-${e.id}`);if(el&&v!==undefined&&v!=='')el.value=v;};
+  set('revenue',d.revenue);set('prospek',d.prospek);set('renewal',d.renewal);set('kmasuk',d.kmasuk);set('kselesai',d.kselesai);set('testimoni',d.testimoni);
+  const fb=document.getElementById(`feedback-${e.id}`);if(fb&&d.feedback)fb.value=d.feedback;}
 function addEmployee(){const e={id:nextId++,name:''};employees.push(e);document.getElementById('employeeGrid').insertAdjacentHTML('beforeend',cardMarkup(e));calculateScore(e.id);updateSummary();checkAllDataFilled();const n=document.getElementById(`name-${e.id}`);if(n)n.focus();}
 function deleteEmployee(id){if(employees.length<=1){alert('Minimal harus ada 1 staff.');return;}if(!confirm('Hapus kartu staff ini?'))return;employees=employees.filter(e=>e.id!==id);const c=document.getElementById(`card-${id}`);if(c)c.remove();updateSummary();checkAllDataFilled();}
 function updateName(id,v){const e=getEmp(id);if(e)e.name=v;updateSummary();checkAllDataFilled();}
 
 function calculateScore(id){
   const tRev=num(document.getElementById('targetRevenue').value)||50000000;
-  const tClo=num(document.getElementById('targetClosing').value)||10;
-  const tTri=num(document.getElementById('targetTrial').value)||20;
-  const tTyp=num(document.getElementById('targetTyping').value)||90;
+  const tRet=num(document.getElementById('targetRetensi').value)||65;
+  const tCom=num(document.getElementById('targetComplain').value)||100;
+  const tPro=num(document.getElementById('targetProspek').value)||15;
+  const tTes=num(document.getElementById('targetTestimoni').value)||5;
   const revenue=num(document.getElementById(`revenue-${id}`).value);
-  const leads=num(document.getElementById(`leads-${id}`).value);
-  const closing=num(document.getElementById(`closing-${id}`).value);
-  const trial=num(document.getElementById(`trial-${id}`).value);
-  const typing=num(document.getElementById(`typing-${id}`).value);
+  const prospek=num(document.getElementById(`prospek-${id}`).value);
+  const renewal=num(document.getElementById(`renewal-${id}`).value);
+  const kmasuk=num(document.getElementById(`kmasuk-${id}`).value);
+  const kselesai=num(document.getElementById(`kselesai-${id}`).value);
+  const testimoni=num(document.getElementById(`testimoni-${id}`).value);
+  const retensi=prospek>0?(renewal/prospek)*100:0;
+  const retensiScore=Math.min((retensi/tRet)*100,100);
   const revenueScore=Math.min((revenue/tRev)*100,100);
-  const rasio=leads>0?(closing/leads)*100:0;
-  const closingScore=Math.min((rasio/tClo)*100,100);
-  const trialScore=Math.min((trial/tTri)*100,100);
-  const typingScore=Math.min((typing/tTyp)*100,100);
-  setScore(`revenueScore-${id}`,revenueScore);setScore(`closingScore-${id}`,closingScore);
-  setScore(`trialScore-${id}`,trialScore);setScore(`typingScore-${id}`,typingScore);
-  document.getElementById(`closingRatio-${id}`).textContent=rasio.toFixed(1)+'%';
-  const total=revenueScore*weights.revenue+closingScore*weights.closing+trialScore*weights.trial+typingScore*weights.typing;
+  const complainPct=kmasuk>0?(kselesai/kmasuk)*100:100; // tanpa komplain = pelayanan sempurna
+  const complainScore=Math.min((complainPct/tCom)*100,100);
+  const prospekScore=Math.min((prospek/tPro)*100,100);
+  const testimoniScore=Math.min((testimoni/tTes)*100,100);
+  setScore(`revenueScore-${id}`,revenueScore);setScore(`prospekScore-${id}`,prospekScore);setScore(`testimoniScore-${id}`,testimoniScore);
+  document.getElementById(`retensiVal-${id}`).textContent=retensi.toFixed(1)+'%';
+  document.getElementById(`complainVal-${id}`).textContent=complainPct.toFixed(0)+'%';
+  const total=retensiScore*weights.retensi+revenueScore*weights.revenue+complainScore*weights.complain+prospekScore*weights.prospek+testimoniScore*weights.testimoni;
   const el=document.getElementById(`total-${id}`);el.textContent=total.toFixed(1)+'%';el.classList.add('calculating');setTimeout(()=>el.classList.remove('calculating'),400);
   updateSummary();checkAllDataFilled();
 }
 function setScore(elId,score){const el=document.getElementById(elId);if(!el)return;el.textContent=score.toFixed(0)+'%';el.classList.remove('excellent','good','warning','poor');if(score>=90)el.classList.add('excellent');else if(score>=70)el.classList.add('good');else if(score>=50)el.classList.add('warning');else el.classList.add('poor');}
 
-function checkAllDataFilled(){let ok=employees.length>0;employees.forEach(e=>{const n=document.getElementById(`name-${e.id}`);const nm=n?n.value.trim():'';['revenue','leads','closing','trial','typing'].forEach(f=>{if(!document.getElementById(`${f}-${e.id}`).value)ok=false;});if(!nm)ok=false;});
+function checkAllDataFilled(){let ok=employees.length>0;employees.forEach(e=>{const n=document.getElementById(`name-${e.id}`);const nm=n?n.value.trim():'';['revenue','prospek','renewal','testimoni'].forEach(f=>{if(!document.getElementById(`${f}-${e.id}`).value)ok=false;});if(!nm)ok=false;});
   document.getElementById('btnDownloadAll').disabled=!ok;document.getElementById('btnDownloadSummary').disabled=!ok;}
 
-function updateSummary(){updatePeriodDisplay();let ts=0,tr=0,tt=0,tc=0;const rk=[];
-  employees.forEach(e=>{const s=parseFloat((document.getElementById(`total-${e.id}`)||{}).textContent)||0;const rev=num((document.getElementById(`revenue-${e.id}`)||{}).value);const tri=num((document.getElementById(`trial-${e.id}`)||{}).value);const clo=num((document.getElementById(`closing-${e.id}`)||{}).value);ts+=s;tr+=rev;tt+=tri;tc+=clo;rk.push({name:getName(e.id),score:s});});
+function updateSummary(){updatePeriodDisplay();let ts=0,tr=0,tret=0,ttes=0;const rk=[];
+  employees.forEach(e=>{const s=parseFloat((document.getElementById(`total-${e.id}`)||{}).textContent)||0;const rev=num((document.getElementById(`revenue-${e.id}`)||{}).value);const ret=parseFloat((document.getElementById(`retensiVal-${e.id}`)||{}).textContent)||0;const tes=num((document.getElementById(`testimoni-${e.id}`)||{}).value);ts+=s;tr+=rev;tret+=ret;ttes+=tes;rk.push({name:getName(e.id),score:s});});
   const c=employees.length||1;
   document.getElementById('avgScore').textContent=(ts/c).toFixed(1)+'%';
   document.getElementById('totalRevenue').textContent='Rp '+tr.toLocaleString('id-ID');
-  document.getElementById('totalTrial').textContent=tt;
-  document.getElementById('totalClosing').textContent=tc;
+  document.getElementById('avgRetensi').textContent=(tret/c).toFixed(1)+'%';
+  document.getElementById('totalTestimoni').textContent=ttes;
   rk.sort((a,b)=>b.score-a.score);const tb=document.getElementById('rankingBody');tb.innerHTML='';
   rk.forEach((e,i)=>{const rank=i+1;let rc='rank-other';if(rank===1)rc='rank-1';else if(rank===2)rc='rank-2';else if(rank===3)rc='rank-3';let g='D';if(e.score>=90)g='A';else if(e.score>=80)g='B';else if(e.score>=70)g='C';
     tb.innerHTML+=`<tr><td><span class="rank-badge ${rc}">${rank}</span></td><td>${escapeHtml(e.name)}</td><td><strong>${e.score.toFixed(1)}%</strong></td><td><div class="score-bar"><div class="score-bar-fill" style="width:${Math.min(e.score,100)}%"></div></div></td><td><strong>${g}</strong></td></tr>`;});
@@ -323,85 +327,81 @@ let chart=null;
 function initChart(){const ctx=document.getElementById('performanceChart').getContext('2d');chart=new Chart(ctx,{type:'bar',data:{labels:[],datasets:[{label:'Final Score (%)',data:[],backgroundColor:'rgba(212,175,55,0.8)',borderColor:'#D4AF37',borderWidth:2,borderRadius:8}]},options:{responsive:true,maintainAspectRatio:true,aspectRatio:2.5,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:100,grid:{color:'rgba(255,255,255,0.1)'},ticks:{color:'#888',callback:v=>v+'%'}},x:{grid:{display:false},ticks:{color:'#888'}}}}});}
 function updateChart(rk){if(chart){chart.data.labels=rk.map(r=>r.name);chart.data.datasets[0].data=rk.map(r=>r.score);chart.update();}}
 
-function resetAll(){if(!confirm('Yakin reset semua data? (Nama staff tetap)'))return;employees.forEach(e=>{['revenue','leads','closing','trial','typing'].forEach(f=>{const el=document.getElementById(`${f}-${e.id}`);if(el)el.value='';});const fb=document.getElementById(`feedback-${e.id}`);if(fb)fb.value='';calculateScore(e.id);});}
+function resetAll(){if(!confirm('Yakin reset semua data? (Nama staff tetap)'))return;employees.forEach(e=>{['revenue','prospek','renewal','kmasuk','kselesai','testimoni'].forEach(f=>{const el=document.getElementById(`${f}-${e.id}`);if(el)el.value='';});const fb=document.getElementById(`feedback-${e.id}`);if(fb)fb.value='';calculateScore(e.id);});}
 
 /* ===================== IMPORT EXCEL / CSV ===================== */
 function norm(s){return String(s||'').toLowerCase().replace(/[\s\n\r%()\/.,\-]/g,'');}
 function handleImport(ev){
-  const file=ev.target.files[0]; if(!file)return;
-  const reader=new FileReader();
+  const file=ev.target.files[0];if(!file)return;const reader=new FileReader();
   reader.onload=function(e){
     try{
       let wb;
-      if(file.name.toLowerCase().endsWith('.csv')){ wb=XLSX.read(e.target.result,{type:'string'}); }
-      else { wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'}); }
+      if(file.name.toLowerCase().endsWith('.csv'))wb=XLSX.read(e.target.result,{type:'string'});
+      else wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'});
       const ws=wb.Sheets[wb.SheetNames[0]];
       const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
-      // parse targets (best effort)
       rows.forEach(r=>{const a=norm(r[0]);const v=num(r[1]);if(!v)return;
-        if(a.includes('targetrevenue'))document.getElementById('targetRevenue').value=v;
-        else if(a.includes('rasioclosing'))document.getElementById('targetClosing').value=v;
-        else if(a.includes('jumlahtrial')||(a.includes('trial')&&a.includes('min')))document.getElementById('targetTrial').value=v;
-        else if(a.includes('typingscore')||a.includes('typing'))document.getElementById('targetTyping').value=v;});
-      // find header row
+        if(a.includes('revenuerenewal')||a.includes('targetrevenue'))document.getElementById('targetRevenue').value=v;
+        else if(a.includes('retensi'))document.getElementById('targetRetensi').value=v;
+        else if(a.includes('complainselesai'))document.getElementById('targetComplain').value=v;
+        else if(a.includes('prospek'))document.getElementById('targetProspek').value=v;
+        else if(a.includes('testimoni'))document.getElementById('targetTestimoni').value=v;});
       let hIdx=-1;for(let i=0;i<rows.length;i++){if(rows[i].some(c=>norm(c).startsWith('namastaff'))){hIdx=i;break;}}
-      if(hIdx<0){alert('Format tidak dikenali: kolom "Nama Staff" tidak ditemukan. Pastikan pakai template KONTRAK_KPI_Sales.');return;}
-      const H=rows[hIdx].map(norm);
-      const find=(fn)=>H.findIndex(fn);
+      if(hIdx<0){alert('Format tidak dikenali: kolom "Nama Staff" tidak ditemukan. Pastikan pakai template KONTRAK_KPI_AfterSales.');return;}
+      const H=rows[hIdx].map(norm);const find=(fn)=>H.findIndex(fn);
       const col={
         name:find(h=>h.startsWith('namastaff')||h==='nama'),
-        leads:find(h=>h.includes('totalleads')||h.includes('leadsmasuk')),
-        trial:find(h=>h.includes('jumlahtrial')||(h.includes('trial')&&!h.includes('rasio'))),
-        closing:find(h=>h.includes('jumlahclosing')||(h.includes('closing')&&!h.includes('rasio'))),
+        prospek:find(h=>h.includes('prospek')),
+        renewal:find(h=>h.includes('closingrenewal')),
         revenue:find(h=>h.includes('revenue')),
-        typing:find(h=>h.includes('typing')),
+        kmasuk:find(h=>h.includes('komplainmasuk')),
+        kselesai:find(h=>h.includes('komplainselesai')),
+        testimoni:find(h=>h.includes('testimoni')),
         catatan:find(h=>h.includes('catatan'))
       };
-      const newEmps=[]; let id=1;
-      for(let i=hIdx+1;i<rows.length;i++){
-        const r=rows[i]; const nm=col.name>=0?String(r[col.name]||'').trim():'';
-        if(!nm)continue;
+      const newEmps=[];let id=1;
+      for(let i=hIdx+1;i<rows.length;i++){const r=rows[i];const nm=col.name>=0?String(r[col.name]||'').trim():'';if(!nm)continue;
         newEmps.push({id:id++,name:nm,data:{
-          leads:col.leads>=0?num(r[col.leads]):'',
-          trial:col.trial>=0?num(r[col.trial]):'',
-          closing:col.closing>=0?num(r[col.closing]):'',
           revenue:col.revenue>=0?num(r[col.revenue]):'',
-          typing:col.typing>=0?num(r[col.typing]):'',
+          prospek:col.prospek>=0?num(r[col.prospek]):'',
+          renewal:col.renewal>=0?num(r[col.renewal]):'',
+          kmasuk:col.kmasuk>=0?num(r[col.kmasuk]):'',
+          kselesai:col.kselesai>=0?num(r[col.kselesai]):'',
+          testimoni:col.testimoni>=0?num(r[col.testimoni]):'',
           feedback:col.catatan>=0?String(r[col.catatan]||''):''
-        }});
-      }
+        }});}
       if(!newEmps.length){alert('Tidak ada baris staff terbaca. Cek isi template.');return;}
-      employees=newEmps; nextId=id;
-      renderAllCards(); recalcAll(); updateSummary();
+      employees=newEmps;nextId=id;renderAllCards();recalcAll();updateSummary();
       alert('Berhasil import '+newEmps.length+' staff. Silakan cek & tambahkan feedback bila perlu.');
     }catch(err){console.error(err);alert('Gagal membaca file: '+err.message);}
     finally{ev.target.value='';}
   };
-  if(file.name.toLowerCase().endsWith('.csv'))reader.readAsText(file); else reader.readAsArrayBuffer(file);
+  if(file.name.toLowerCase().endsWith('.csv'))reader.readAsText(file);else reader.readAsArrayBuffer(file);
 }
 
 /* ===================== PDF ===================== */
 let currentPreviewEmpId=null;
 function generatePDFContent(id){
   const name=getName(id);const m=document.getElementById('month');const y=document.getElementById('year').value;const mn=m.options[m.selectedIndex].text;
-  const tRev=num(document.getElementById('targetRevenue').value);
+  const tRev=num(document.getElementById('targetRevenue').value);const tRet=num(document.getElementById('targetRetensi').value);
   const revenue=num(document.getElementById(`revenue-${id}`).value);
-  const leads=num(document.getElementById(`leads-${id}`).value);
-  const closing=num(document.getElementById(`closing-${id}`).value);
-  const trial=num(document.getElementById(`trial-${id}`).value);
-  const typing=num(document.getElementById(`typing-${id}`).value);
+  const prospek=num(document.getElementById(`prospek-${id}`).value);
+  const renewal=num(document.getElementById(`renewal-${id}`).value);
+  const kmasuk=num(document.getElementById(`kmasuk-${id}`).value);
+  const kselesai=num(document.getElementById(`kselesai-${id}`).value);
+  const testimoni=num(document.getElementById(`testimoni-${id}`).value);
   const feedback=document.getElementById(`feedback-${id}`).value||'-';
   const total=document.getElementById(`total-${id}`).textContent;
   const rvS=document.getElementById(`revenueScore-${id}`).textContent;
-  const clS=document.getElementById(`closingScore-${id}`).textContent;
-  const trS=document.getElementById(`trialScore-${id}`).textContent;
-  const tyS=document.getElementById(`typingScore-${id}`).textContent;
-  const rasio=document.getElementById(`closingRatio-${id}`).textContent;
+  const prS=document.getElementById(`prospekScore-${id}`).textContent;
+  const teS=document.getElementById(`testimoniScore-${id}`).textContent;
+  const retensi=document.getElementById(`retensiVal-${id}`).textContent;
+  const complainPct=document.getElementById(`complainVal-${id}`).textContent;
   const sc=parseFloat(total);let grade='D',gc='#F44336';if(sc>=90){grade='A';gc='#4CAF50';}else if(sc>=80){grade='B';gc='#D4AF37';}else if(sc>=70){grade='C';gc='#FF9800';}
   return `<div id="pdfPage" style="width:794px;height:1123px;background:#0D0D0D;color:#FAFAFA;font-family:Arial,sans-serif;padding:34px 40px;box-sizing:border-box;position:relative;overflow:hidden;">
     <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:34px;color:rgba(212,175,55,0.04);font-weight:700;white-space:nowrap;">Insight by M Rafli Febriansyah</div>
     <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #D4AF37;padding-bottom:12px;margin-bottom:18px;">
-      <div><div style="font-size:26px;color:#D4AF37;font-weight:bold;">Golden English</div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:2px;">Bekasi Area &bull; Sales Team</div></div>
+      <div><div style="font-size:26px;color:#D4AF37;font-weight:bold;">Golden English</div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:2px;">Bekasi Area &bull; After Sales Team</div></div>
       <div style="text-align:right;"><div style="font-size:11px;color:#888;text-transform:uppercase;">KPI Report</div><div style="font-size:18px;color:#D4AF37;font-weight:600;">${mn} ${y}</div></div>
     </div>
     <div style="background:linear-gradient(90deg,#B8960C,#D4AF37);padding:15px 20px;border-radius:8px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;">
@@ -410,20 +410,23 @@ function generatePDFContent(id){
     </div>
     <div style="display:flex;gap:12px;margin-bottom:12px;">
       <div style="flex:1;background:#1A1A1A;border:1px solid #2D2D2D;border-radius:8px;padding:16px;">
-        <div style="font-size:10px;color:#D4AF37;text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #2D2D2D;">Financial (75%)</div>
-        <div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:#888;">Revenue Closingan (50%)</span><span style="color:#D4AF37;font-weight:600;">${rvS}</span></div>
+        <div style="font-size:10px;color:#D4AF37;text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #2D2D2D;">Retensi & Revenue (70%)</div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:#888;">Revenue Renewal (30%)</span><span style="color:#D4AF37;font-weight:600;">${rvS}</span></div>
         <div style="font-size:15px;color:#FFF;font-weight:600;">Rp ${revenue.toLocaleString('id-ID')}</div>
-        <div style="font-size:10px;color:#888;margin-bottom:12px;">Target: Rp ${tRev.toLocaleString('id-ID')}</div>
-        <div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:#888;">Rasio Closing (25%)</span><span style="color:#D4AF37;font-weight:600;">${clS}</span></div>
-        <div style="font-size:15px;color:#FFF;font-weight:600;">${closing} / ${leads} leads (${rasio})</div>
+        <div style="font-size:10px;color:#888;margin-bottom:10px;">Target: Rp ${tRev.toLocaleString('id-ID')}</div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:#888;">Retensi (30%)</span><span style="color:#D4AF37;font-weight:600;">${retensi}</span></div>
+        <div style="font-size:15px;color:#FFF;font-weight:600;">${renewal} / ${prospek} prospek</div>
+        <div style="font-size:10px;color:#888;margin-bottom:10px;">Target: ${tRet}%</div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:#888;">Prospek Ditindaklanjuti (10%)</span><span style="color:#D4AF37;font-weight:600;">${prS}</span></div>
+        <div style="font-size:15px;color:#FFF;font-weight:600;">${prospek} prospek</div>
       </div>
       <div style="flex:1;background:#1A1A1A;border:1px solid #2D2D2D;border-radius:8px;padding:16px;">
-        <div style="font-size:10px;color:#D4AF37;text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #2D2D2D;">Customer (15%)</div>
-        <div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:#888;">Jumlah Trial</span><span style="color:#D4AF37;font-weight:600;">${trS}</span></div>
-        <div style="font-size:15px;color:#FFF;font-weight:600;margin-bottom:14px;">${trial} orang</div>
-        <div style="font-size:10px;color:#D4AF37;text-transform:uppercase;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #2D2D2D;">Learning & Growth (10%)</div>
-        <div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:#888;">Typing Test</span><span style="color:#D4AF37;font-weight:600;">${tyS}</span></div>
-        <div style="font-size:15px;color:#FFF;font-weight:600;">${typing}</div>
+        <div style="font-size:10px;color:#D4AF37;text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #2D2D2D;">Service (20%)</div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:#888;">Complain Selesai</span><span style="color:#D4AF37;font-weight:600;">${complainPct}</span></div>
+        <div style="font-size:15px;color:#FFF;font-weight:600;margin-bottom:14px;">${kselesai} / ${kmasuk} komplain</div>
+        <div style="font-size:10px;color:#D4AF37;text-transform:uppercase;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #2D2D2D;">Growth (10%)</div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:#888;">Jumlah Testimoni</span><span style="color:#D4AF37;font-weight:600;">${teS}</span></div>
+        <div style="font-size:15px;color:#FFF;font-weight:600;">${testimoni} testimoni</div>
       </div>
     </div>
     <div style="background:#1A1A1A;border:1px solid #D4AF37;border-radius:8px;padding:16px;">
@@ -436,20 +439,19 @@ function previewIndividualPDF(id){currentPreviewEmpId=id;document.getElementById
 function closePreview(){document.getElementById('previewModal').classList.remove('show');document.body.style.overflow='auto';}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closePreview();});
 async function exportIndividualPDF(id){const name=getName(id);const m=document.getElementById('month');const y=document.getElementById('year').value;const mn=m.options[m.selectedIndex].text;
-  const c=document.createElement('div');c.innerHTML=generatePDFContent(id);c.style.cssText='position:absolute;left:-9999px;top:0;width:794px;';document.body.appendChild(c);
-  const el=c.querySelector('#pdfPage');
-  const opt={margin:[0,0,0,0],filename:`KPI_${name.replace(/\s+/g,'_')}_${mn}_${y}.pdf`,image:{type:'jpeg',quality:0.98},html2canvas:{scale:2,useCORS:true,scrollY:0},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['avoid-all','css','legacy']}};
+  const c=document.createElement('div');c.innerHTML=generatePDFContent(id);c.style.cssText='position:absolute;left:-9999px;top:0;width:794px;';document.body.appendChild(c);const el=c.querySelector('#pdfPage');
+  const opt={margin:[0,0,0,0],filename:`KPI_AfterSales_${name.replace(/\s+/g,'_')}_${mn}_${y}.pdf`,image:{type:'jpeg',quality:0.98},html2canvas:{scale:2,useCORS:true,scrollY:0},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['avoid-all','css','legacy']}};
   try{await html2pdf().set(opt).from(el).save();}catch(e){console.error(e);}finally{document.body.removeChild(c);closePreview();}}
 async function exportAllIndividualPDF(){const m=document.getElementById('month');const y=document.getElementById('year').value;const mn=m.options[m.selectedIndex].text;
   const ld=document.createElement('div');ld.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.9);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;';ld.innerHTML=`<div style="color:#D4AF37;font-size:24px;margin-bottom:20px;">Generating PDFs...</div><div id="progressText" style="color:#fff;">0 / ${employees.length}</div>`;document.body.appendChild(ld);
   for(let i=0;i<employees.length;i++){const e=employees[i];document.getElementById('progressText').textContent=`${i+1} / ${employees.length} - ${getName(e.id)}`;
     const c=document.createElement('div');c.innerHTML=generatePDFContent(e.id);c.style.cssText='position:fixed;left:0;top:0;z-index:-9999;';document.body.appendChild(c);const el=c.querySelector('#pdfPage');
-    const opt={margin:0,filename:`KPI_${getName(e.id).replace(/\s+/g,'_')}_${mn}_${y}.pdf`,image:{type:'jpeg',quality:1},html2canvas:{scale:2,useCORS:true,width:794,height:1123,windowWidth:794,windowHeight:1123},jsPDF:{unit:'px',format:[794,1123],orientation:'portrait',hotfixes:['px_scaling']}};
+    const opt={margin:0,filename:`KPI_AfterSales_${getName(e.id).replace(/\s+/g,'_')}_${mn}_${y}.pdf`,image:{type:'jpeg',quality:1},html2canvas:{scale:2,useCORS:true,width:794,height:1123,windowWidth:794,windowHeight:1123},jsPDF:{unit:'px',format:[794,1123],orientation:'portrait',hotfixes:['px_scaling']}};
     await html2pdf().set(opt).from(el).save();document.body.removeChild(c);await new Promise(r=>setTimeout(r,400));}
   document.body.removeChild(ld);alert('Semua PDF berhasil di-download!');}
 async function exportPDF(){const s=document.querySelector('.summary-section');const a=document.querySelector('.actions');a.style.display='none';
   const m=document.getElementById('month');const y=document.getElementById('year').value;const mn=m.options[m.selectedIndex].text;
-  const opt={margin:10,filename:`KPI_Summary_Sales_Bekasi_${mn}_${y}.pdf`,image:{type:'jpeg',quality:1},html2canvas:{scale:2,backgroundColor:'#0D0D0D',useCORS:true},jsPDF:{unit:'mm',format:'a4',orientation:'landscape'}};
+  const opt={margin:10,filename:`KPI_Summary_AfterSales_Bekasi_${mn}_${y}.pdf`,image:{type:'jpeg',quality:1},html2canvas:{scale:2,backgroundColor:'#0D0D0D',useCORS:true},jsPDF:{unit:'mm',format:'a4',orientation:'landscape'}};
   await html2pdf().set(opt).from(s).save();a.style.display='flex';}
 </script>
 </body>
